@@ -1,0 +1,3 @@
+\form#0:$fold\_left\;f\;acc\;[b_{1};\cdots;b_{n}]$
+\form#1:$f\;(\cdots\;(f\;(f\;a\;b_{1})\;b_{2})\;\cdots)\;b_{n}$
+\form#2:$0$
