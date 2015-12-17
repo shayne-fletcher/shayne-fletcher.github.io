@@ -9,6 +9,7 @@ var searchData=
   ['ostreambuf_5fiterator',['ostreambuf_iterator',['http://en.cppreference.com/w/cpp/iterator/ostreambuf_iterator.html',1,'std']]],
   ['ostringstream',['ostringstream',['http://en.cppreference.com/w/cpp/io/basic_ostringstream.html',1,'std']]],
   ['ostrstream',['ostrstream',['http://en.cppreference.com/w/cpp/io/ostrstream.html',1,'std']]],
+  ['otherwise',['otherwise',['../structpgs_1_1otherwise.html',1,'pgs']]],
   ['out_5fof_5frange',['out_of_range',['http://en.cppreference.com/w/cpp/error/out_of_range.html',1,'std']]],
   ['output_5fiterator_5ftag',['output_iterator_tag',['http://en.cppreference.com/w/cpp/iterator/iterator_tags.html',1,'std']]],
   ['overflow_5ferror',['overflow_error',['http://en.cppreference.com/w/cpp/error/overflow_error.html',1,'std']]],
