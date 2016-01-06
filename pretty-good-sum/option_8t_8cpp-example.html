@@ -167,10 +167,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line"><span class="comment">//`default x (Some v)` returns `v` and `default x None` returns `x`</span></div>
 <div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line">T <span class="keyword">const</span>&amp; default_ (T <span class="keyword">const</span>&amp; x, option&lt;T&gt; <span class="keyword">const</span>&amp; u) {</div>
-<div class="line">  <span class="keywordflow">return</span> u.match&lt;T <span class="keyword">const</span>&amp;&gt; (</div>
-<div class="line">    [](some_t&lt;T&gt; <span class="keyword">const</span>&amp; o) -&gt; T <span class="keyword">const</span>&amp; { <span class="keywordflow">return</span> o.data; },</div>
-<div class="line">    [=](none_t <span class="keyword">const</span>&amp;) -&gt; T <span class="keyword">const</span>&amp; { <span class="keywordflow">return</span> x; }</div>
+<div class="line">T default_ (T x, option&lt;T&gt; <span class="keyword">const</span>&amp; u) {</div>
+<div class="line">  <span class="keywordflow">return</span> u.match&lt;T&gt; (</div>
+<div class="line">    [](some_t&lt;T&gt; <span class="keyword">const</span>&amp; o) -&gt; T { <span class="keywordflow">return</span> o.data; },</div>
+<div class="line">    [=](none_t <span class="keyword">const</span>&amp;) -&gt; T { <span class="keywordflow">return</span> x; }</div>
 <div class="line">  );</div>
 <div class="line">}</div>
 <div class="line"></div>
