@@ -229,16 +229,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">     );</div>
 <div class="line">  }</div>
 <div class="line"></div>
-<div class="line">  <span class="keyword">namespace </span>detail {</div>
+<div class="line">  <span class="keyword">namespace </span>list_detail {</div>
 <div class="line">    list&lt;int&gt; range_aux (list&lt;int&gt; <span class="keyword">const</span>&amp; acc, <span class="keywordtype">int</span> <span class="keyword">const</span> s, <span class="keywordtype">int</span> e) {</div>
 <div class="line">      <span class="keywordflow">if</span> (s &gt;= e) <span class="keywordflow">return</span> acc;</div>
 <div class="line">      <span class="keywordflow">return</span> range_aux (cons (s, acc), s + 1, e);</div>
 <div class="line">    };</div>
-<div class="line">  }<span class="comment">//namespace detail</span></div>
+<div class="line">  }<span class="comment">//namespace list_detail</span></div>
 <div class="line"></div>
 <div class="line">  <span class="comment">//rg - like the Python function &#39;range&#39;</span></div>
 <div class="line">  list&lt;int&gt; rg (<span class="keywordtype">int</span> <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/iterator/begin.html">begin</a>, <span class="keywordtype">int</span> <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/iterator/end.html">end</a>) {</div>
-<div class="line">    <span class="keywordflow">return</span> rev (detail::range_aux (nil&lt;int&gt; (), begin, end));</div>
+<div class="line">    <span class="keywordflow">return</span> rev (list_detail::range_aux (nil&lt;int&gt; (), begin, end));</div>
 <div class="line">  };</div>
 <div class="line"></div>
 <div class="line">  <span class="comment">//append (catenate two lists - not tail recursive)</span></div>

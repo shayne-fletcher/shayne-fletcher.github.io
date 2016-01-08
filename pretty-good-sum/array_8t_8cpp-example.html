@@ -107,6 +107,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><span class="comment">//of view of the client, it is purely applicative. However, the</span></div>
 <div class="line"><span class="comment">//implementation is imperative in nature and the persistence illusory!</span></div>
 <div class="line"></div>
+<div class="line"><span class="comment">//One thing to watch out for here is the massive use of side effects</span></div>
+<div class="line"><span class="comment">//rendering this program seriously multi-thread unfriendly.</span></div>
+<div class="line"></div>
 <div class="line"><span class="comment">//[1] Henry G. Baker. Shallow binding in Lisp 1.5. Commun. ACM,</span></div>
 <div class="line"><span class="comment">//21(7):565-569, 1978.</span></div>
 <div class="line"><span class="comment">//</span></div>
@@ -115,6 +118,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><span class="comment">//&quot;http://www.lri.fr/~filliatr/ftp/publis/puf-wml07.ps</span></div>
 <div class="line"></div>
 <div class="line"><span class="keyword">namespace </span>{</div>
+<div class="line"></div>
+<div class="line">  <span class="keyword">namespace </span>detail {</div>
 <div class="line"></div>
 <div class="line">  <span class="keyword">using namespace </span><a class="code" href="namespacepgs.html">pgs</a>;</div>
 <div class="line"></div>
@@ -135,7 +140,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
 <div class="line">  <span class="keyword">struct </span>array_t {</div>
 <div class="line">    <a name="_a1"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/container/vector.html">std::vector &lt;T&gt;</a> data;<span class="comment">//array data</span></div>
-<div class="line">    array_t (<span class="keywordtype">int</span> n, T <span class="keyword">const</span>&amp; val) : data (n, val)</div>
+<div class="line">    array_t (<a name="_a2"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/size_t.html">std::size_t</a> n, T <span class="keyword">const</span>&amp; val) : data (n, val)</div>
 <div class="line">    {}</div>
 <div class="line">    array_t (<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/container/vector.html">std::vector&lt;T&gt;</a>&amp;&amp; data) : data (data)</div>
 <div class="line">    {}</div>
@@ -147,10 +152,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">  <span class="comment">//`i` where it contains `v`</span></div>
 <div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
 <div class="line">  <span class="keyword">struct </span>diff_t {</div>
-<div class="line">    <span class="keywordtype">int</span> i; <span class="comment">//index</span></div>
+<div class="line">    <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/size_t.html">std::size_t</a> i; <span class="comment">//index</span></div>
 <div class="line">    T v;  <span class="comment">//value at that index</span></div>
 <div class="line">    persistent_array&lt;T&gt; t;  <span class="comment">//the base array</span></div>
-<div class="line">    diff_t (<span class="keywordtype">int</span> i, T <span class="keyword">const</span>&amp; v, persistent_array&lt;T&gt; <span class="keyword">const</span>&amp; t) </div>
+<div class="line">    diff_t (<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/size_t.html">std::size_t</a> i, T <span class="keyword">const</span>&amp; v, persistent_array&lt;T&gt; <span class="keyword">const</span>&amp; t) </div>
 <div class="line">      : i (i), v(v), t (t) </div>
 <div class="line">    {}</div>
 <div class="line">  };</div>
@@ -158,10 +163,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">  <span class="comment">//The definition of the sum `array_data&lt;T&gt;` is achieved via</span></div>
 <div class="line">  <span class="comment">//inheritance and a forwarding construtor</span></div>
 <div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line">  <span class="keyword">struct </span>array_data : <a name="_a2"></a><a class="code" href="classpgs_1_1sum__type.html">sum_type</a>&lt;array_t&lt;T&gt;, diff_t&lt;T&gt;&gt; {</div>
+<div class="line">  <span class="keyword">struct </span>array_data : <a name="_a3"></a><a class="code" href="classpgs_1_1sum__type.html">sum_type</a>&lt;array_t&lt;T&gt;, diff_t&lt;T&gt;&gt; {</div>
 <div class="line">    <span class="keyword">using</span> base_type = <a class="code" href="classpgs_1_1sum__type.html">sum_type&lt;array_t&lt;T&gt;</a>, diff_t&lt;T&gt;&gt;;</div>
 <div class="line">    <span class="keyword">template</span> &lt;<span class="keyword">class </span>U, <span class="keyword">class</span>... Args&gt;</div>
-<div class="line">      array_data (<a name="_a3"></a><a class="code" href="structpgs_1_1constructor.html">constructor&lt;U&gt;</a> t, Args&amp;&amp;... args)</div>
+<div class="line">      array_data (<a name="_a4"></a><a class="code" href="structpgs_1_1constructor.html">constructor&lt;U&gt;</a> t, Args&amp;&amp;... args)</div>
 <div class="line">      : base_type (t, std::forward&lt;Args&gt;(args)...)</div>
 <div class="line">    {}</div>
 <div class="line">  };</div>
@@ -169,7 +174,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">  <span class="comment">//`make (n, val)` returns a persistent array containing `n` copies</span></div>
 <div class="line">  <span class="comment">//of `val`</span></div>
 <div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line">  persistent_array&lt;T&gt; make (<span class="keywordtype">int</span> n, T <span class="keyword">const</span>&amp; val) {</div>
+<div class="line">  persistent_array&lt;T&gt; make (<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/size_t.html">std::size_t</a> n, T <span class="keyword">const</span>&amp; val) {</div>
 <div class="line">    <span class="keywordflow">return</span> persistent_array&lt;T&gt;{</div>
 <div class="line">      <span class="keyword">new</span> array_data&lt;T&gt;{<a class="code" href="structpgs_1_1constructor.html">constructor&lt;array_t&lt;T&gt;</a>&gt;{}, n, val}};</div>
 <div class="line">  }</div>
@@ -179,7 +184,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">  <span class="comment">//the indirection and possibly recursively access another</span></div>
 <div class="line">  <span class="comment">//persistent array</span></div>
 <div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line">  T <span class="keyword">const</span>&amp; <span class="keyword">get</span> (persistent_array&lt;T&gt; <span class="keyword">const</span>&amp; t, <span class="keywordtype">int</span> i) {</div>
+<div class="line">  T <span class="keyword">const</span>&amp; <span class="keyword">get</span> (persistent_array&lt;T&gt; <span class="keyword">const</span>&amp; t, <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/size_t.html">std::size_t</a> i) {</div>
 <div class="line">    <span class="keywordflow">return</span> t-&gt;match&lt;T <span class="keyword">const</span>&amp;&gt;(</div>
 <div class="line">      [=](array_t&lt;T&gt; <span class="keyword">const</span>&amp; a) -&gt; T <span class="keyword">const</span>&amp; { </div>
 <div class="line">        <span class="keywordflow">return</span> a.data[i]; </div>
@@ -194,7 +199,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">  <span class="comment">//previous versions</span></div>
 <div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
 <div class="line">  persistent_array&lt;T&gt; set (</div>
-<div class="line">    persistent_array&lt;T&gt;&amp; t, <span class="keywordtype">int</span> i, T <span class="keyword">const</span>&amp; v) {</div>
+<div class="line">      persistent_array&lt;T&gt; <span class="keyword">const</span>&amp; t<span class="comment">//preserve conceptual &#39;constness&#39;</span></div>
+<div class="line">    , <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/size_t.html">std::size_t</a> i, T <span class="keyword">const</span>&amp; v) {</div>
 <div class="line"></div>
 <div class="line">    <span class="keywordflow">return</span> t-&gt;match&lt;persistent_array&lt;T&gt;&gt;(</div>
 <div class="line">      [&amp;t, &amp;v, i](array_t&lt;T&gt;&amp; a) -&gt; persistent_array&lt;T&gt; {</div>
@@ -202,9 +208,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">        a.data[i] = v;</div>
 <div class="line">        <span class="comment">//`res` will be the newest version</span></div>
 <div class="line">        persistent_array&lt;T&gt; res{</div>
-<div class="line">          <span class="keyword">new</span> array_data&lt;T&gt;{<a class="code" href="structpgs_1_1constructor.html">constructor&lt;array_t&lt;T&gt;</a>&gt;{}, <a name="a4"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/move.html">std::move</a> (a.data)}};</div>
+<div class="line">          <span class="keyword">new</span> array_data&lt;T&gt;{<a class="code" href="structpgs_1_1constructor.html">constructor&lt;array_t&lt;T&gt;</a>&gt;{}, <a name="a5"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/move.html">std::move</a> (a.data)}};</div>
 <div class="line">        <span class="comment">//Now, replace the contents of `t` with an indirection</span></div>
-<div class="line">        *t = array_data&lt;T&gt;{<a class="code" href="structpgs_1_1constructor.html">constructor&lt;diff_t&lt;T&gt;</a>&gt;{}, i, old, res};</div>
+<div class="line">        *(<span class="keyword">const_cast&lt;</span>persistent_array&lt;T&gt;&amp;<span class="keyword">&gt;</span>(t)) = array_data&lt;T&gt;{<a class="code" href="structpgs_1_1constructor.html">constructor&lt;diff_t&lt;T&gt;</a>&gt;{}, i, old, res};</div>
 <div class="line"></div>
 <div class="line">        <span class="keywordflow">return</span> res;</div>
 <div class="line">      }</div>
@@ -217,13 +223,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line">  <span class="comment">//`ostream` inserter for persistent arrays</span></div>
 <div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line">  <a name="_a5"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/io/basic_ostream.html">std::ostream</a>&amp; operator &lt;&lt; (</div>
+<div class="line">  <a name="_a6"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/io/basic_ostream.html">std::ostream</a>&amp; operator &lt;&lt; (</div>
 <div class="line">     <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/io/basic_ostream.html">std::ostream</a>&amp; os, persistent_array&lt;T&gt; <span class="keyword">const</span>&amp; t) {</div>
 <div class="line">    <span class="keywordflow">return</span> t-&gt;match&lt;<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/io/basic_ostream.html">std::ostream</a>&amp;&gt;(</div>
 <div class="line">      [&amp;](array_t&lt;T&gt; <span class="keyword">const</span>&amp; a) -&gt; <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/io/basic_ostream.html">std::ostream</a>&amp; {</div>
 <div class="line">        os &lt;&lt; <span class="stringliteral">&quot;[| &quot;</span>;</div>
-<div class="line">        <a name="a6"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/algorithm/copy.html">std::copy</a> (a.data.begin (), a.data.end ()</div>
-<div class="line">                   , <a name="_a7"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/iterator/ostream_iterator.html">std::ostream_iterator&lt;T&gt;</a>(os, <span class="stringliteral">&quot;; &quot;</span>));</div>
+<div class="line">        <a name="a7"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/algorithm/copy.html">std::copy</a> (a.data.begin (), a.data.end ()</div>
+<div class="line">                   , <a name="_a8"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/iterator/ostream_iterator.html">std::ostream_iterator&lt;T&gt;</a>(os, <span class="stringliteral">&quot;; &quot;</span>));</div>
 <div class="line">        os &lt;&lt; <span class="stringliteral">&quot;|]&quot;</span>;</div>
 <div class="line">        <span class="keywordflow">return</span> os;</div>
 <div class="line">      }</div>
@@ -237,34 +243,65 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line">  <span class="comment">//Return a string representation of the given persistent array</span></div>
 <div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line">  <a name="_a8"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/string/basic_string.html">std::string</a> string_of_persistent_array (persistent_array&lt;T&gt; <span class="keyword">const</span>&amp; t) {</div>
-<div class="line">    <a name="_a9"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/io/basic_ostringstream.html">std::ostringstream</a> os;</div>
+<div class="line">  <a name="_a9"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/string/basic_string.html">std::string</a> string_of_persistent_array (persistent_array&lt;T&gt; <span class="keyword">const</span>&amp; t) {</div>
+<div class="line">    <a name="_a10"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/io/basic_ostringstream.html">std::ostringstream</a> os;</div>
 <div class="line">    os &lt;&lt; t;</div>
-<div class="line">    <span class="keywordflow">return</span> os.<a name="a10"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/io/basic_ostringstream/str.html">str</a> ();</div>
+<div class="line">    <span class="keywordflow">return</span> os.<a name="a11"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/io/basic_ostringstream/str.html">str</a> ();</div>
 <div class="line">  }</div>
+<div class="line"></div>
+<div class="line">  }<span class="comment">//namespace detail</span></div>
+<div class="line"></div>
+<div class="line">  <span class="comment">//Wrap this thing up with an object-oriented facade</span></div>
+<div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line">  <span class="keyword">class </span>persistent_array {</div>
+<div class="line">  <span class="keyword">private</span>:</div>
+<div class="line">    detail::persistent_array&lt;T&gt; impl_;</div>
+<div class="line"></div>
+<div class="line">  <span class="keyword">private</span>:</div>
+<div class="line">    persistent_array (detail::persistent_array&lt;T&gt; a)</div>
+<div class="line">      : impl_(a)</div>
+<div class="line">    {}</div>
+<div class="line"></div>
+<div class="line">  <span class="keyword">public</span>: </div>
+<div class="line">    persistent_array (<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/size_t.html">std::size_t</a> n, T <span class="keyword">const</span>&amp; val)</div>
+<div class="line">      : impl_ (detail::make (n, val))</div>
+<div class="line">    {}</div>
+<div class="line"></div>
+<div class="line">    T <span class="keyword">const</span>&amp; <span class="keyword">get</span> (<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/size_t.html">std::size_t</a> i) <span class="keyword">const</span> {</div>
+<div class="line">      <span class="keywordflow">return</span> detail_::get (impl_, i);</div>
+<div class="line">    } </div>
+<div class="line"></div>
+<div class="line">    persistent_array&lt;T&gt; set (<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/size_t.html">std::size_t</a> i, T <span class="keyword">const</span>&amp; val)<span class="keyword"> const </span>{</div>
+<div class="line">      <span class="keywordflow">return</span> persistent_array&lt;T&gt;{detail::set (impl_, i, val)};</div>
+<div class="line">    }</div>
+<div class="line"></div>
+<div class="line">    <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/string/basic_string.html">std::string</a> as_string ()<span class="keyword"> const </span>{</div>
+<div class="line">      <span class="keywordflow">return</span> detail::string_of_persistent_array (impl_);</div>
+<div class="line">    }</div>
+<div class="line"></div>
+<div class="line">  };</div>
 <div class="line"></div>
 <div class="line">}<span class="comment">//namespace&lt;anonymous&gt;</span></div>
 <div class="line"></div>
 <div class="line">TEST (<a class="code" href="namespacepgs.html">pgs</a>, array) {</div>
 <div class="line"></div>
-<div class="line">  persistent_array&lt;int&gt; a0 = make (7, 0);</div>
-<div class="line">  persistent_array&lt;int&gt; a1 = set (a0, 1, 7);</div>
-<div class="line">  persistent_array&lt;int&gt; a2 = set (a1, 2, 8);</div>
-<div class="line">  persistent_array&lt;int&gt; a3 = set (a1, 2, 9);</div>
+<div class="line">  persistent_array&lt;int&gt; a0{7, 0};</div>
+<div class="line">  persistent_array&lt;int&gt; a1 = a0.set (1, 7);</div>
+<div class="line">  persistent_array&lt;int&gt; a2 = a1.set (2, 8);</div>
+<div class="line">  persistent_array&lt;int&gt; a3 = a1.set (2, 9);</div>
 <div class="line"></div>
 <div class="line">  ASSERT_EQ (</div>
-<div class="line">    string_of_persistent_array&lt;int&gt; (a0)</div>
+<div class="line">    a0.as_string ()</div>
 <div class="line">  , <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/string/basic_string.html">std::string</a> (<span class="stringliteral">&quot;Diff (1, 0, Diff (2, 0, [| 0; 7; 8; 0; 0; 0; 0; |]))&quot;</span>));</div>
 <div class="line">  ASSERT_EQ (</div>
-<div class="line">    string_of_persistent_array&lt;int&gt; (a1)</div>
+<div class="line">    a1.as_string ()</div>
 <div class="line">  , <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/string/basic_string.html">std::string</a> (<span class="stringliteral">&quot;Diff (2, 0, [| 0; 7; 8; 0; 0; 0; 0; |])&quot;</span>));</div>
 <div class="line">  ASSERT_EQ (</div>
-<div class="line">    string_of_persistent_array&lt;int&gt; (a2)</div>
+<div class="line">    a2.as_string ()</div>
 <div class="line">  , <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/string/basic_string.html">std::string</a> (<span class="stringliteral">&quot;[| 0; 7; 8; 0; 0; 0; 0; |]&quot;</span>));</div>
 <div class="line">  ASSERT_EQ (</div>
-<div class="line">    string_of_persistent_array&lt;int&gt; (a3)</div>
+<div class="line">    a3.as_string ()</div>
 <div class="line">  , <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/string/basic_string.html">std::string</a> (<span class="stringliteral">&quot;Diff (2, 9, Diff (2, 0, [| 0; 7; 8; 0; 0; 0; 0; |]))&quot;</span>));</div>
-<div class="line"></div>
 <div class="line">}</div>
 </div><!-- fragment --> </div><!-- contents -->
 <!-- start footer part -->

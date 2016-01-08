@@ -95,7 +95,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line">  <span class="keyword">using namespace </span><a class="code" href="namespacepgs.html">pgs</a>;</div>
 <div class="line"></div>
-<div class="line">  <span class="keyword">namespace </span>detail {</div>
+<div class="line">  <span class="keyword">namespace </span>tree_detail {</div>
 <div class="line">    <span class="comment">//(&#39;a, &#39;b) tree = </span></div>
 <div class="line">    <span class="comment">//  | Empty </span></div>
 <div class="line">    <span class="comment">//  | Node of (&#39;a, &#39;b) * (&#39;a, &#39;b) tree * (&#39;a,&#39;b) tree</span></div>
@@ -264,7 +264,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">    <span class="keyword">template</span> &lt;<span class="keyword">class</span> K, <span class="keyword">class</span> V&gt;</div>
 <div class="line">      <span class="keyword">using</span> tree_type = <span class="keyword">typename</span> node_type&lt;K, V&gt;::tree_type;</div>
 <div class="line"></div>
-<div class="line">  }<span class="comment">//namespace detail</span></div>
+<div class="line">  }<span class="comment">//namespace tree_detail</span></div>
 <div class="line"></div>
 <div class="line">  <span class="comment">//Dead simple binary search tree - no attempt at balancing</span></div>
 <div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> K, <span class="keyword">class</span> V&gt;</div>
@@ -273,8 +273,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line">    <span class="comment">//These abbreviations will become essential in your efforts to</span></div>
 <div class="line">    <span class="comment">//retain some sanity in what follows</span></div>
-<div class="line">    <span class="keyword">using</span> empty_type = detail::empty_t;</div>
-<div class="line">    <span class="keyword">using</span> node_type = detail::node_type&lt;K, V&gt;;</div>
+<div class="line">    <span class="keyword">using</span> empty_type = tree_detail::empty_t;</div>
+<div class="line">    <span class="keyword">using</span> node_type = tree_detail::node_type&lt;K, V&gt;;</div>
 <div class="line">    <span class="keyword">using</span> value_type = <span class="keyword">typename</span> node_type::value_type;</div>
 <div class="line">    <span class="keyword">using</span> tree_type = <span class="keyword">typename</span> node_type::tree_type;</div>
 <div class="line">    <span class="keyword">using</span> self_type = binary_search_tree&lt;K, V&gt;;</div>
@@ -294,13 +294,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line">    <span class="comment">//Test for emptiness</span></div>
 <div class="line">    <span class="keywordtype">bool</span> empty () {</div>
-<div class="line">      <span class="keywordflow">return</span> detail::empty (impl_);</div>
+<div class="line">      <span class="keywordflow">return</span> tree_detail::empty (impl_);</div>
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">//Apply &#39;f&#39; to each binding in the tree</span></div>
 <div class="line">    <span class="keyword">template</span> &lt;<span class="keyword">class</span> AccT, <span class="keyword">class</span> F&gt;</div>
 <div class="line">    AccT fold (AccT <span class="keyword">const</span>&amp; z, F f)<span class="keyword"> const </span>{</div>
-<div class="line">      <span class="keywordflow">return</span> detail::fold (impl_, z, f);</div>
+<div class="line">      <span class="keywordflow">return</span> tree_detail::fold (impl_, z, f);</div>
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">//Compute a new tree with the same bindings as self but also</span></div>
@@ -308,7 +308,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">    <span class="comment">//self, that binding is replaced by `(k, v)`</span></div>
 <div class="line">    <span class="keyword">template</span> &lt;<span class="keyword">class</span> P&gt;</div>
 <div class="line">    self_type insert (P&amp;&amp; p)<span class="keyword"> const </span>{</div>
-<div class="line">      <span class="keywordflow">return</span> self_type { detail::insert (impl_, std::forward&lt;P&gt;(p))};</div>
+<div class="line">      <span class="keywordflow">return</span> self_type { tree_detail::insert (impl_, std::forward&lt;P&gt;(p))};</div>
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">//Compute a new tree with same bindings as self but without a</span></div>
@@ -328,13 +328,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line">    <span class="comment">//True if `k` is bound</span></div>
 <div class="line">    <span class="keywordtype">bool</span> contains (K <span class="keyword">const</span>&amp; k)<span class="keyword"> const </span>{</div>
-<div class="line">      <span class="keywordflow">return</span> detail::contains (impl_, k);</div>
+<div class="line">      <span class="keywordflow">return</span> tree_detail::contains (impl_, k);</div>
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">//Get the value bound to `k` in the tree. Raise a</span></div>
 <div class="line">    <span class="comment">//`std::runtime_error` if there is no binding for `k`</span></div>
 <div class="line">    V <span class="keyword">const</span>&amp; lookup (K <span class="keyword">const</span>&amp; k)<span class="keyword"> const </span>{</div>
-<div class="line">      <span class="keywordflow">return</span> detail::lookup (impl_, k);</div>
+<div class="line">      <span class="keywordflow">return</span> tree_detail::lookup (impl_, k);</div>
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">//Extract the bindings in the tree. They&#39;ll come back sorted</span></div>
@@ -375,7 +375,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">    <span class="comment">//bindings that dont&#39;</span></div>
 <div class="line">    <span class="keyword">template</span> &lt;<span class="keyword">class</span> P&gt;</div>
 <div class="line">    <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair.html">std::pair&lt;self_type, self_type&gt;</a> <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/algorithm/partition.html">partition</a> (P <span class="keyword">const</span>&amp; p)<span class="keyword"> const </span>{</div>
-<div class="line">      <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair.html">std::pair&lt;tree_type, tree_type&gt;</a> res{detail::partition(impl_, p)};</div>
+<div class="line">      <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair.html">std::pair&lt;tree_type, tree_type&gt;</a> res{tree_detail::partition(impl_, p)};</div>
 <div class="line">      <span class="keywordflow">return</span> <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair/make_pair.html">std::make_pair</a> (</div>
 <div class="line">       self_type{<a name="a6"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/move.html">std::move</a>(res.first)}, self_type{<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/move.html">std::move</a> (res.second)});</div>
 <div class="line">    }</div>
@@ -394,13 +394,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">    <span class="comment">//Return the smallest binding (may throw `std::runtime_error` if</span></div>
 <div class="line">    <span class="comment">//the tree is empty)</span></div>
 <div class="line">    value_type min_binding ()<span class="keyword"> const </span>{</div>
-<div class="line">      <span class="keywordflow">return</span> detail::min_binding (impl_);</div>
+<div class="line">      <span class="keywordflow">return</span> tree_detail::min_binding (impl_);</div>
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">//Return the largest binding (may throw `std::runtime_error` if</span></div>
 <div class="line">    <span class="comment">//the tree is empty)</span></div>
 <div class="line">    value_type max_binding ()<span class="keyword"> const </span>{</div>
-<div class="line">      <span class="keywordflow">return</span> detail::max_binding (impl_);</div>
+<div class="line">      <span class="keywordflow">return</span> tree_detail::max_binding (impl_);</div>
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">  };</div>
