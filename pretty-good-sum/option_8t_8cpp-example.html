@@ -81,12 +81,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <p>Options are a type that can be either 'None' (undefined) or 'Some x' for any value 'x'</p>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;gtest/gtest.h&gt;</span></div>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;pgs/pgs.hpp&gt;</span></div>
 <div class="line"></div>
-<div class="line"><span class="preprocessor">#include &quot;sum_type.hpp&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;gtest/gtest.h&gt;</span></div>
 <div class="line"></div>
 <div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;climits&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;functional&gt;</span></div>
 <div class="line"></div>
 <div class="line"><span class="comment">//type &#39;a t = Some of &#39;a | None</span></div>
 <div class="line"></div>
@@ -98,7 +100,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><span class="keyword">struct </span>some_t { <span class="comment">//Case 1</span></div>
 <div class="line">  T data;  </div>
 <div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> U&gt;</div>
-<div class="line">  <span class="keyword">explicit</span> some_t (U&amp;&amp; data) : data (std::forward&lt;U&gt; (data))</div>
+<div class="line">  <span class="keyword">explicit</span> some_t (U&amp;&amp; data) : data { std::forward&lt;U&gt; (data) }</div>
 <div class="line">  {}</div>
 <div class="line">};</div>
 <div class="line"></div>
@@ -109,6 +111,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><span class="comment">//(undefined) or `some_t&lt;T&gt;`</span></div>
 <div class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
 <div class="line"><span class="keyword">using</span> option = <a name="_a0"></a><a class="code" href="classpgs_1_1sum__type.html">sum_type&lt;some_t&lt;T&gt;</a>, none_t&gt;;</div>
+<div class="line"></div>
+<div class="line"><span class="comment">//is_none : `true` if a `some_t&lt;&gt;`, `false` otherwise</span></div>
+<div class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><span class="keywordtype">bool</span> is_none (option&lt;T&gt; <span class="keyword">const</span>&amp; o) {</div>
+<div class="line">  <span class="keywordflow">return</span> o.<a name="a1"></a><a class="code" href="classpgs_1_1sum__type.html#a45d97b3a779fac1c047680e2baf3ffa5">is</a>&lt;none_t&gt; ();</div>
+<div class="line">}</div>
 <div class="line"></div>
 <div class="line"><span class="comment">//A trait that can &quot;get at&quot; the type `T` contained by an option</span></div>
 <div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span>&gt;</div>
@@ -121,37 +129,29 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><span class="comment">//Factory function for case `none_t`</span></div>
 <div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
 <div class="line">option&lt;T&gt; none () {</div>
-<div class="line">  <span class="keywordflow">return</span> option&lt;T&gt;{<a name="_a1"></a><a class="code" href="structpgs_1_1constructor.html">constructor&lt;none_t&gt;</a>{}};</div>
+<div class="line">  <span class="keywordflow">return</span> option&lt;T&gt;{<a name="_a2"></a><a class="code" href="structpgs_1_1constructor.html">constructor&lt;none_t&gt;</a>{}};</div>
 <div class="line">}</div>
 <div class="line"></div>
 <div class="line"><span class="comment">//Factory function for case `some_t&lt;&gt;`</span></div>
 <div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line">option&lt;T&gt; some (T&amp;&amp; val) {</div>
-<div class="line">  <span class="keywordflow">return</span> option&lt;T&gt;{<a class="code" href="structpgs_1_1constructor.html">constructor&lt;some_t&lt;T&gt;</a>&gt;{}, std::forward&lt;T&gt; (val)};</div>
-<div class="line">}</div>
-<div class="line"></div>
-<div class="line"><span class="comment">//is_none : `true` if a `some_t&lt;&gt;`, `false` otherwise</span></div>
-<div class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><span class="keywordtype">bool</span> is_none (option&lt;T&gt; <span class="keyword">const</span>&amp; o) {</div>
-<div class="line">  <span class="keywordflow">return</span> o.match&lt;<span class="keywordtype">bool</span>&gt; (</div>
-<div class="line">   [](some_t&lt;T&gt; <span class="keyword">const</span>&amp;) { <span class="keywordflow">return</span> <span class="keyword">false</span>; },</div>
-<div class="line">   [](none_t <span class="keyword">const</span>&amp;) { <span class="keywordflow">return</span> <span class="keyword">true</span>; }</div>
-<div class="line">  );</div>
+<div class="line">option&lt;decay_t&lt;T&gt;&gt; some (T&amp;&amp; val) {</div>
+<div class="line">  <span class="keyword">using</span> t = decay_t&lt;T&gt;;</div>
+<div class="line">  <span class="keywordflow">return</span> option&lt;t&gt;{<a class="code" href="structpgs_1_1constructor.html">constructor&lt;some_t&lt;t&gt;</a>&gt;{}, std::forward&lt;T&gt; (val)};</div>
 <div class="line">}</div>
 <div class="line"></div>
 <div class="line"><span class="comment">//is_some : `false` if a `none_t`, `true` otherwise</span></div>
 <div class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
 <div class="line"><span class="keyword">inline</span> <span class="keywordtype">bool</span> is_some (option&lt;T&gt; <span class="keyword">const</span>&amp; o) {</div>
-<div class="line">  <span class="keywordflow">return</span> !is_none (o);</div>
+<div class="line">  <span class="keywordflow">return</span> o.is&lt;some_t&lt;T&gt;&gt;();</div>
 <div class="line">}</div>
 <div class="line"></div>
 <div class="line"><span class="comment">//Attempt to get a `const` reference to the value contained by an</span></div>
 <div class="line"><span class="comment">//option</span></div>
 <div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
 <div class="line">T <span class="keyword">const</span>&amp; <span class="keyword">get</span> (option&lt;T&gt; <span class="keyword">const</span> &amp; u) {</div>
-<div class="line">  <span class="keywordflow">return</span> u.match&lt;T <span class="keyword">const</span>&amp;&gt; (</div>
+<div class="line">  <span class="keywordflow">return</span> u.template match&lt;T const&amp;&gt; (</div>
 <div class="line">   [](some_t&lt;T&gt; <span class="keyword">const</span>&amp; o) -&gt; T <span class="keyword">const</span>&amp; { <span class="keywordflow">return</span> o.data; },</div>
-<div class="line">   [](none_t <span class="keyword">const</span>&amp;) -&gt; T <span class="keyword">const</span>&amp; { <span class="keywordflow">throw</span> <a name="_a2"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/error/runtime_error.html">std::runtime_error</a> {<span class="stringliteral">&quot;get&quot;</span>}; }</div>
+<div class="line">   [](none_t <span class="keyword">const</span>&amp;) -&gt; T <span class="keyword">const</span>&amp; { <span class="keywordflow">throw</span> <a name="_a3"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/error/runtime_error.html">std::runtime_error</a> {<span class="stringliteral">&quot;get&quot;</span>}; }</div>
 <div class="line">  );</div>
 <div class="line">}</div>
 <div class="line"></div>
@@ -159,7 +159,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><span class="comment">//option</span></div>
 <div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
 <div class="line">T&amp; <span class="keyword">get</span> (option&lt;T&gt;&amp; u) {</div>
-<div class="line">  <span class="keywordflow">return</span> u.match&lt;T&amp;&gt; (</div>
+<div class="line">  <span class="keywordflow">return</span> u.template match&lt;T&amp;&gt; (</div>
 <div class="line">   [](some_t&lt;T&gt;&amp; o) -&gt; T&amp; { <span class="keywordflow">return</span> o.data; },</div>
 <div class="line">   [](none_t&amp;) -&gt; T&amp; { <span class="keywordflow">throw</span> <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/error/runtime_error.html">std::runtime_error</a> {<span class="stringliteral">&quot;get&quot;</span>}; }</div>
 <div class="line">   );</div>
@@ -168,7 +168,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><span class="comment">//`default x (Some v)` returns `v` and `default x None` returns `x`</span></div>
 <div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
 <div class="line">T default_ (T x, option&lt;T&gt; <span class="keyword">const</span>&amp; u) {</div>
-<div class="line">  <span class="keywordflow">return</span> u.match&lt;T&gt; (</div>
+<div class="line">  <span class="keywordflow">return</span> u.template match&lt;T&gt; (</div>
 <div class="line">    [](some_t&lt;T&gt; <span class="keyword">const</span>&amp; o) -&gt; T { <span class="keywordflow">return</span> o.data; },</div>
 <div class="line">    [=](none_t <span class="keyword">const</span>&amp;) -&gt; T { <span class="keywordflow">return</span> x; }</div>
 <div class="line">  );</div>
@@ -178,7 +178,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><span class="comment">//returns `x`</span></div>
 <div class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> F, <span class="keyword">class</span> U, <span class="keyword">class</span> T&gt;</div>
 <div class="line"><span class="keyword">auto</span> map_default (F f, U <span class="keyword">const</span>&amp; x, option&lt;T&gt; <span class="keyword">const</span>&amp; u) -&gt; U {</div>
-<div class="line">  <span class="keywordflow">return</span> u.match &lt;U&gt; (</div>
+<div class="line">  <span class="keywordflow">return</span> u.template match &lt;U&gt; (</div>
 <div class="line">    [=](some_t&lt;T&gt; <span class="keyword">const</span>&amp; o) -&gt; U { <span class="keywordflow">return</span> f (o.data); },</div>
 <div class="line">    [=](none_t <span class="keyword">const</span>&amp;) -&gt; U { <span class="keywordflow">return</span> x; }</div>
 <div class="line">  );</div>
@@ -189,15 +189,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><span class="keyword">auto</span> operator * (option&lt;T&gt; <span class="keyword">const</span>&amp; o, F k) -&gt; decltype (k (<span class="keyword">get</span> (o))) {</div>
 <div class="line">  <span class="keyword">using</span> result_t = decltype (k ( <span class="keyword">get</span> (o)));</div>
 <div class="line">  <span class="keyword">using</span> t = option_value_type_t&lt;result_t&gt;;</div>
-<div class="line">  <span class="keywordflow">return</span> o.match&lt;result_t&gt;(</div>
-<div class="line">      [](none_t <span class="keyword">const</span>&amp;) { <span class="keywordflow">return</span> none&lt;t&gt;(); }, </div>
-<div class="line">      [=](some_t&lt;T&gt; <span class="keyword">const</span>&amp; o) { <span class="keywordflow">return</span> k (o.data); }</div>
+<div class="line">  <span class="keywordflow">return</span> o.template match&lt;result_t&gt;  (</div>
+<div class="line">      [](none_t <span class="keyword">const</span>&amp;) -&gt; result_t { <span class="keywordflow">return</span> none&lt;t&gt;(); }, </div>
+<div class="line">      [=](some_t&lt;T&gt; <span class="keyword">const</span>&amp; o) -&gt; result_t { <span class="keywordflow">return</span> k (o.data); }</div>
 <div class="line">  );</div>
 <div class="line">}</div>
 <div class="line"></div>
 <div class="line"><span class="comment">//Option monad &#39;unit&#39;</span></div>
 <div class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line">option&lt;T&gt; unit (T&amp;&amp; a) {</div>
+<div class="line">option&lt;decay_t&lt;T&gt;&gt; unit (T&amp;&amp; a) {</div>
 <div class="line">  <span class="keywordflow">return</span> some (std::forward&lt;T&gt; (a));</div>
 <div class="line">}</div>
 <div class="line"></div>
@@ -205,9 +205,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keyword">class</span> F&gt;</div>
 <div class="line"><span class="keyword">auto</span> map (F f, option&lt;T&gt; <span class="keyword">const</span>&amp; m) -&gt; option&lt;decltype (f (get (m)))&gt;{</div>
 <div class="line">  <span class="keyword">using</span> t = decltype (f ( <span class="keyword">get</span> (m)));</div>
-<div class="line">  <span class="keywordflow">return</span> m.match&lt;option&lt;t&gt;&gt;(</div>
-<div class="line">      [](none_t <span class="keyword">const</span>&amp;) { <span class="keywordflow">return</span> none&lt;t&gt;(); }, </div>
-<div class="line">      [=](some_t&lt;T&gt; <span class="keyword">const</span>&amp; o) { <span class="keywordflow">return</span> some (f (o.data)); }</div>
+<div class="line">  <span class="keywordflow">return</span> m.template match&lt;option&lt;t&gt;&gt; (</div>
+<div class="line">      [](none_t <span class="keyword">const</span>&amp;) -&gt; option&lt;t&gt; { <span class="keywordflow">return</span> none&lt;t&gt;(); }, </div>
+<div class="line">      [=](some_t&lt;T&gt; <span class="keyword">const</span>&amp; o) -&gt; option&lt;t&gt; { <span class="keywordflow">return</span> some (f (o.data)); }</div>
 <div class="line">  );</div>
 <div class="line">}</div>
 <div class="line"></div>
@@ -225,7 +225,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line">  ASSERT_EQ (default_(1, none&lt;int&gt;()), 1);</div>
 <div class="line">  ASSERT_EQ (default_(1, some(3)), 3);</div>
-<div class="line">  <span class="keyword">auto</span> h = [](<span class="keywordtype">int</span> y){ <span class="keywordflow">return</span> float (y * y); };</div>
+<div class="line">  <span class="keyword">auto</span> h = [](<span class="keywordtype">int</span> y) -&gt; <span class="keywordtype">float</span>{ <span class="keywordflow">return</span> float (y * y); };</div>
 <div class="line">  ASSERT_EQ (map_default (h, 0.0, none&lt;int&gt;()), 0.0);</div>
 <div class="line">  ASSERT_EQ (map_default (h, 0.0, some (3)), 9.0);</div>
 <div class="line">}</div>
@@ -234,8 +234,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line"><span class="comment">//safe &quot;arithmetic&quot;</span></div>
 <div class="line"></div>
-<div class="line"><span class="keyword">auto</span> add (<span class="keywordtype">int</span> x) {</div>
-<div class="line">  <span class="keywordflow">return</span> [=](<span class="keywordtype">int</span> y) {</div>
+<div class="line"><a name="_a4"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/functional/function.html">std::function&lt;option&lt;int&gt;</a>(int)&gt; add (<span class="keywordtype">int</span> x) {</div>
+<div class="line">  <span class="keywordflow">return</span> [=](<span class="keywordtype">int</span> y) -&gt; option&lt;int&gt; {</div>
 <div class="line">    <span class="keywordflow">if</span> ((x &gt; 0) &amp;&amp; (y &gt; INT_MAX - x) ||</div>
 <div class="line">        (x &lt; 0) &amp;&amp; (y &lt; INT_MIN - x)) {</div>
 <div class="line">        <span class="keywordflow">return</span> none&lt;int&gt;(); <span class="comment">//overflow</span></div>
@@ -244,8 +244,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">  };</div>
 <div class="line">}</div>
 <div class="line"></div>
-<div class="line"><span class="keyword">auto</span> sub (<span class="keywordtype">int</span> x) {</div>
-<div class="line">  <span class="keywordflow">return</span> [=](<span class="keywordtype">int</span> y) {</div>
+<div class="line"><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/functional/function.html">std::function&lt;option&lt;int&gt;</a>(int)&gt; sub (<span class="keywordtype">int</span> x) {</div>
+<div class="line">  <span class="keywordflow">return</span> [=](<span class="keywordtype">int</span> y) -&gt; option&lt;int&gt; {</div>
 <div class="line">    <span class="keywordflow">if</span> ((x &gt; 0) &amp;&amp; (y &lt; (INT_MIN + x)) ||</div>
 <div class="line">        (x &lt; 0) &amp;&amp; (y &gt; (INT_MAX + x))) {</div>
 <div class="line">      <span class="keywordflow">return</span> none&lt;int&gt;(); <span class="comment">//overflow</span></div>
@@ -254,9 +254,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">  };</div>
 <div class="line">}</div>
 <div class="line"></div>
-<div class="line"><span class="keyword">auto</span> mul (<span class="keywordtype">int</span> x) {</div>
-<div class="line">  <span class="keywordflow">return</span> [=](<span class="keywordtype">int</span> y) {</div>
-<div class="line"></div>
+<div class="line"><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/functional/function.html">std::function&lt;option&lt;int&gt;</a>(int)&gt; mul (<span class="keywordtype">int</span> x) {</div>
+<div class="line">  <span class="keywordflow">return</span> [=](<span class="keywordtype">int</span> y) -&gt; option&lt;int&gt; {</div>
 <div class="line">    <span class="keywordflow">if</span> (y &gt; 0) { <span class="comment">//y positive</span></div>
 <div class="line">      <span class="keywordflow">if</span> (x &gt; 0) {  <span class="comment">//x positive</span></div>
 <div class="line">        <span class="keywordflow">if</span> (y &gt; (INT_MAX / x)) {</div>
@@ -286,7 +285,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">  };</div>
 <div class="line">}</div>
 <div class="line"></div>
-<div class="line"><span class="keyword">auto</span> <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/numeric/math/div.html">div</a> (<span class="keywordtype">int</span> x) {</div>
+<div class="line"><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/functional/function.html">std::function&lt;option&lt;int&gt;</a>(int)&gt; <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/numeric/math/div.html">div</a> (<span class="keywordtype">int</span> x) {</div>
 <div class="line">  <span class="keywordflow">return</span> [=](<span class="keywordtype">int</span> y) {</div>
 <div class="line">    <span class="keywordflow">if</span> (x == 0) {</div>
 <div class="line">      <span class="keywordflow">return</span> none&lt;int&gt;();<span class="comment">//division by 0</span></div>
@@ -307,12 +306,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">  <span class="comment">//division will truncate)</span></div>
 <div class="line">  ASSERT_EQ (<span class="keyword">get</span> (unit (INT_MAX) * <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/numeric/math/div.html">div</a> (2) * mul (2) * add (1)), INT_MAX);</div>
 <div class="line"></div>
-<div class="line">  <span class="comment">//2 * (INT_MAX/2 + 1) (overflow)</span></div>
+<div class="line">  <span class="comment">// //2 * (INT_MAX/2 + 1) (overflow)</span></div>
 <div class="line">  ASSERT_TRUE (is_none (unit (INT_MAX) * <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/numeric/math/div.html">div</a> (2) * add (1) * mul (2)));</div>
 <div class="line"></div>
-<div class="line">  <span class="comment">//INT_MIN/(-1)</span></div>
+<div class="line">  <span class="comment">// //INT_MIN/(-1)</span></div>
 <div class="line">  ASSERT_TRUE (is_none (unit (INT_MIN) * <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/numeric/math/div.html">div</a> (-1)));</div>
 <div class="line">}</div>
+<div class="line"></div>
 </div><!-- fragment --> </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

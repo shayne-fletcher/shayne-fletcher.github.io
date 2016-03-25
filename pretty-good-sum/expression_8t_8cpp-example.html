@@ -81,9 +81,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <p>Abstract syntax trees</p>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;gtest/gtest.h&gt;</span></div>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;pgs/pgs.hpp&gt;</span></div>
 <div class="line"></div>
-<div class="line"><span class="preprocessor">#include &quot;sum_type.hpp&quot;</span> <span class="comment">//For `sum_type&lt;&gt;`</span></div>
+<div class="line"><span class="preprocessor">#include &lt;gtest/gtest.h&gt;</span></div>
 <div class="line"></div>
 <div class="line"><span class="keyword">namespace </span>{</div>
 <div class="line"></div>
@@ -111,33 +111,37 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">  , <a class="code" href="classpgs_1_1recursive__wrapper.html">recursive_wrapper&lt;E_div&gt;</a></div>
 <div class="line">  &gt;;</div>
 <div class="line"></div>
-<div class="line"><span class="comment">//Addition expressions contain a left operand and a right operand</span></div>
-<div class="line"><span class="keyword">struct </span>E_add {</div>
-<div class="line">  xpr_t l, r;</div>
-<div class="line">  E_add (xpr_t <span class="keyword">const</span>&amp; l, xpr_t <span class="keyword">const</span>&amp; r) : l (l), r (r) </div>
-<div class="line">  {}</div>
-<div class="line">};</div>
-<div class="line"></div>
-<div class="line"><span class="comment">//Subtraction expressions contain a left operand and a right operand</span></div>
-<div class="line"><span class="keyword">struct </span>E_sub {</div>
-<div class="line">  xpr_t l, r;</div>
-<div class="line">  E_sub (xpr_t <span class="keyword">const</span>&amp; l, xpr_t <span class="keyword">const</span>&amp; r) : l (l), r (r) </div>
-<div class="line">  {}</div>
-<div class="line">};</div>
-<div class="line"></div>
-<div class="line"><span class="comment">//Multiplication expressions contain a left operand and a right</span></div>
+<div class="line"><span class="comment">//Base class for expressions that contain a left operand and a right</span></div>
 <div class="line"><span class="comment">//operand</span></div>
-<div class="line"><span class="keyword">struct </span>E_mul {</div>
+<div class="line"><span class="keyword">struct </span>op {</div>
 <div class="line">  xpr_t l, r;</div>
-<div class="line">  E_mul (xpr_t <span class="keyword">const</span>&amp; l, xpr_t <span class="keyword">const</span>&amp; r) : l (l), r (r) </div>
+<div class="line"></div>
+<div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> U, <span class="keyword">class</span> V&gt;</div>
+<div class="line">  op (U&amp;&amp; l, V&amp;&amp; r) : l {std::forward&lt;U&gt; (l)}, r {std::forward&lt;V&gt; (r)} </div>
 <div class="line">  {}</div>
 <div class="line">};</div>
 <div class="line"></div>
-<div class="line"><span class="comment">//Division expressions contain a left operand and a right</span></div>
-<div class="line"><span class="comment">//operand</span></div>
-<div class="line"><span class="keyword">struct </span>E_div {</div>
-<div class="line">  xpr_t l, r;</div>
-<div class="line">  E_div (xpr_t <span class="keyword">const</span>&amp; l, xpr_t <span class="keyword">const</span>&amp; r) : l (l), r (r) </div>
+<div class="line"><span class="keyword">struct </span>E_add : op {</div>
+<div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> U, <span class="keyword">class</span> V&gt;</div>
+<div class="line">  E_add (U&amp;&amp; l, V&amp;&amp; r) : op {std::forward&lt;U&gt; (l), std::forward&lt;V&gt; (r)}</div>
+<div class="line">  {}</div>
+<div class="line">};</div>
+<div class="line"></div>
+<div class="line"><span class="keyword">struct </span>E_sub : op{</div>
+<div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> U, <span class="keyword">class</span> V&gt;</div>
+<div class="line">  E_sub (U&amp;&amp; l, V&amp;&amp; r) : op {std::forward&lt;U&gt; (l), std::forward&lt;V&gt; (r)}</div>
+<div class="line">  {}</div>
+<div class="line">};</div>
+<div class="line"></div>
+<div class="line"><span class="keyword">struct </span>E_mul : op {</div>
+<div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> U, <span class="keyword">class</span> V&gt;</div>
+<div class="line">  E_mul (U&amp;&amp; l, V&amp;&amp; r) : op {std::forward&lt;U&gt; (l), std::forward&lt;V&gt; (r)}</div>
+<div class="line">  {}</div>
+<div class="line">};</div>
+<div class="line"></div>
+<div class="line"><span class="keyword">struct </span>E_div : op {</div>
+<div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> U, <span class="keyword">class</span> V&gt;</div>
+<div class="line">  E_div (U&amp;&amp; l, V&amp;&amp; r) : op {std::forward&lt;U&gt; (l), std::forward&lt;V&gt; (r)}</div>
 <div class="line">  {}</div>
 <div class="line">};</div>
 <div class="line"></div>
@@ -164,12 +168,23 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line"><span class="comment">//An `ostream` &quot;inserter&quot; for expressions</span></div>
 <div class="line"><a name="_a3"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/io/basic_ostream.html">std::ostream</a>&amp; operator &lt;&lt; (<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/io/basic_ostream.html">std::ostream</a>&amp; os, xpr_t <span class="keyword">const</span>&amp; e) {</div>
+<div class="line"></div>
 <div class="line">  <span class="keywordflow">return</span> e.match&lt;<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/io/basic_ostream.html">std::ostream</a>&amp;&gt; (</div>
-<div class="line">    [&amp;](E_const <span class="keyword">const</span>&amp; e) -&gt; <span class="keyword">auto</span>&amp; { <span class="keywordflow">return</span> os &lt;&lt; e.i;  },</div>
-<div class="line">    [&amp;](E_mul <span class="keyword">const</span>&amp; e) -&gt; <span class="keyword">auto</span>&amp; { <span class="keywordflow">return</span> os &lt;&lt; e.l &lt;&lt; <span class="stringliteral">&quot;*&quot;</span> &lt;&lt; e.r;  },</div>
-<div class="line">    [&amp;](E_div <span class="keyword">const</span>&amp; e)-&gt; <span class="keyword">auto</span>&amp;  { <span class="keywordflow">return</span> os &lt;&lt; e.l &lt;&lt; <span class="stringliteral">&quot;/&quot;</span> &lt;&lt; e.r;  },</div>
-<div class="line">    [&amp;](E_add <span class="keyword">const</span>&amp; e) -&gt; <span class="keyword">auto</span>&amp; { <span class="keywordflow">return</span> os &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; e.l &lt;&lt; <span class="stringliteral">&quot; + &quot;</span> &lt;&lt; e.r &lt;&lt; <span class="stringliteral">&quot;)&quot;</span>; },</div>
-<div class="line">    [&amp;](E_sub <span class="keyword">const</span>&amp; e) -&gt; <span class="keyword">auto</span>&amp; { <span class="keywordflow">return</span> os &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; e.l &lt;&lt; <span class="stringliteral">&quot; - &quot;</span> &lt;&lt; e.r &lt;&lt; <span class="stringliteral">&quot;)&quot;</span>; }</div>
+<div class="line">    [&amp;](E_const <span class="keyword">const</span>&amp; e) -&gt; <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/io/basic_ostream.html">std::ostream</a>&amp; { </div>
+<div class="line">      <span class="keywordflow">return</span> os &lt;&lt; e.i;  </div>
+<div class="line">    },</div>
+<div class="line">    [&amp;](E_mul <span class="keyword">const</span>&amp; e) -&gt; <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/io/basic_ostream.html">std::ostream</a>&amp; { </div>
+<div class="line">      <span class="keywordflow">return</span> os &lt;&lt; e.l &lt;&lt; <span class="stringliteral">&quot;*&quot;</span> &lt;&lt; e.r;  }</div>
+<div class="line">    ,</div>
+<div class="line">    [&amp;](E_div <span class="keyword">const</span>&amp; e)-&gt; <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/io/basic_ostream.html">std::ostream</a>&amp;  { </div>
+<div class="line">      <span class="keywordflow">return</span> os &lt;&lt; e.l &lt;&lt; <span class="stringliteral">&quot;/&quot;</span> &lt;&lt; e.r;  </div>
+<div class="line">    },</div>
+<div class="line">    [&amp;](E_add <span class="keyword">const</span>&amp; e) -&gt; <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/io/basic_ostream.html">std::ostream</a>&amp; { </div>
+<div class="line">      <span class="keywordflow">return</span> os &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; e.l &lt;&lt; <span class="stringliteral">&quot; + &quot;</span> &lt;&lt; e.r &lt;&lt; <span class="stringliteral">&quot;)&quot;</span>; </div>
+<div class="line">    },</div>
+<div class="line">    [&amp;](E_sub <span class="keyword">const</span>&amp; e) -&gt; <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/io/basic_ostream.html">std::ostream</a>&amp; { </div>
+<div class="line">      <span class="keywordflow">return</span> os &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; e.l &lt;&lt; <span class="stringliteral">&quot; - &quot;</span> &lt;&lt; e.r &lt;&lt; <span class="stringliteral">&quot;)&quot;</span>; </div>
+<div class="line">    }</div>
 <div class="line">   );</div>
 <div class="line">}</div>
 <div class="line"></div>

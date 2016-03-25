@@ -83,7 +83,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>Dead simple, purely functional binary search tree</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;gtest/gtest.h&gt;</span></div>
 <div class="line"></div>
-<div class="line"><span class="preprocessor">#include &quot;sum_type.hpp&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;pgs/sum_type.hpp&gt;</span></div>
 <div class="line"></div>
 <div class="line"><span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;utility&gt;</span></div>
@@ -116,11 +116,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line">      <span class="comment">//Construct a `node_t` from `data`, a `left` and a `right`</span></div>
 <div class="line">      <span class="comment">//sub-tree</span></div>
-<div class="line">      <span class="keyword">template</span> &lt;<span class="keyword">class</span> P, <span class="keyword">class</span> U, <span class="keyword">class</span> V&gt;</div>
-<div class="line">      node_t (P&amp;&amp; data, U&amp;&amp; left_child, V&amp;&amp; right_child) </div>
-<div class="line">        : data (std::forward&lt;P&gt;(data))</div>
-<div class="line">        , left_child (std::forward&lt;U&gt; (left_child))</div>
-<div class="line">        , right_child (std::forward&lt;V&gt; (right_child))</div>
+<div class="line">      <span class="keyword">template</span> &lt;<span class="keyword">class</span> D, <span class="keyword">class</span> L, <span class="keyword">class</span> R&gt;</div>
+<div class="line">      node_t (D&amp;&amp; data, L&amp;&amp; left_child, R&amp;&amp; right_child) </div>
+<div class="line">        : data {std::forward&lt;D&gt;(data)}</div>
+<div class="line">        , left_child {std::forward&lt;L&gt; (left_child)}</div>
+<div class="line">        , right_child {std::forward&lt;R&gt; (right_child)}</div>
 <div class="line">      {}</div>
 <div class="line"></div>
 <div class="line">      <span class="comment">//A node consists of:</span></div>
@@ -131,15 +131,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line">    <span class="keyword">template</span> &lt;<span class="keyword">class</span> K, <span class="keyword">class</span> V&gt;</div>
 <div class="line">    <span class="keywordtype">bool</span> empty (tree&lt;K, V&gt; <span class="keyword">const</span>&amp; t) {</div>
-<div class="line">      <span class="keywordflow">return</span> t.match&lt;<span class="keywordtype">bool</span>&gt;(</div>
-<div class="line">       [](empty_t) { <span class="keywordflow">return</span> <span class="keyword">true</span>; },</div>
-<div class="line">       [](node_t&lt;K, V&gt; <span class="keyword">const</span>&amp;) { <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
-<div class="line">       );</div>
+<div class="line">      <span class="keywordflow">return</span> t.is&lt;empty_t&gt; ();</div>
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="keyword">template</span> &lt;<span class="keyword">class</span> K, <span class="keyword">class</span> V, <span class="keyword">class</span> AccT, <span class="keyword">class</span> F&gt;</div>
 <div class="line">    AccT fold (tree&lt;K, V&gt; <span class="keyword">const</span>&amp; t, AccT <span class="keyword">const</span>&amp; z, F f) {</div>
-<div class="line">      <span class="keywordflow">return</span> t.match&lt;AccT&gt;(</div>
+<div class="line">      <span class="keywordflow">return</span> t.template match&lt;AccT&gt;(</div>
 <div class="line">       [&amp;z](empty_t <span class="keyword">const</span>&amp;) -&gt; AccT { <span class="keywordflow">return</span> z; },</div>
 <div class="line">       [=, &amp;z](node_t&lt;K, V&gt; <span class="keyword">const</span>&amp; n) -&gt; AccT {</div>
 <div class="line">         <span class="keyword">auto</span> <span class="keyword">const</span>&amp; b = n.data;</div>
@@ -152,7 +149,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line">    <span class="keyword">template</span> &lt;<span class="keyword">class</span> K, <span class="keyword">class</span> V, <span class="keyword">class</span> P&gt;</div>
 <div class="line">    tree&lt;K, V&gt; insert (tree&lt;K, V&gt; <span class="keyword">const</span>&amp; t, P&amp;&amp; p) {</div>
-<div class="line">      <span class="keywordflow">return</span> t.match&lt;tree&lt;K, V&gt;&gt; (</div>
+<div class="line">      <span class="keywordflow">return</span> t.template match&lt;tree&lt;K, V&gt;&gt; (</div>
 <div class="line">         [&amp;p](empty_t) { </div>
 <div class="line">         <span class="keywordflow">return</span> tree&lt;K, V&gt;{</div>
 <div class="line">            <a name="_a2"></a><a class="code" href="structpgs_1_1constructor.html">constructor&lt;node_t&lt;K, V&gt;</a>&gt;{}</div>
@@ -185,7 +182,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line">    <span class="keyword">template</span> &lt;<span class="keyword">class</span> K, <span class="keyword">class</span> V&gt;</div>
 <div class="line">    <span class="keywordtype">bool</span> contains (tree&lt;K, V&gt; <span class="keyword">const</span>&amp; t, K <span class="keyword">const</span>&amp; k) {</div>
-<div class="line">      <span class="keywordflow">return</span> t.match&lt;<span class="keywordtype">bool</span>&gt;(</div>
+<div class="line">      <span class="keywordflow">return</span> t.template match&lt;bool&gt;(</div>
 <div class="line">        [](empty_t) { <span class="keywordflow">return</span> <span class="keyword">false</span>; },</div>
 <div class="line">        [&amp;k](node_t&lt;K, V&gt; <span class="keyword">const</span>&amp; n) {</div>
 <div class="line">          <span class="keyword">auto</span> <span class="keyword">const</span>&amp; a = n.data.first;</div>
@@ -200,7 +197,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line">    <span class="keyword">template</span> &lt;<span class="keyword">class</span> K, <span class="keyword">class</span> V&gt;</div>
 <div class="line">    V <span class="keyword">const</span>&amp; lookup (tree&lt;K, V&gt; <span class="keyword">const</span>&amp; t, K <span class="keyword">const</span>&amp; k) {</div>
-<div class="line">      <span class="keywordflow">return</span> t.match&lt;V <span class="keyword">const</span>&amp;&gt;(</div>
+<div class="line">      <span class="keywordflow">return</span> t.template match&lt;V const&amp;&gt;(</div>
 <div class="line">        [](empty_t <span class="keyword">const</span>&amp;) -&gt; V <span class="keyword">const</span>&amp; { </div>
 <div class="line">          <span class="keywordflow">throw</span> <a name="_a3"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/error/runtime_error.html">std::runtime_error</a>{<span class="stringliteral">&quot;lookup&quot;</span>}; </div>
 <div class="line">        },</div>
@@ -217,20 +214,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line">    <span class="keyword">template</span> &lt;<span class="keyword">class</span> K, <span class="keyword">class</span> V, <span class="keyword">class</span> P&gt;</div>
 <div class="line">    <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair.html">std::pair&lt;tree&lt;K, V&gt;</a>, tree&lt;K, V&gt;&gt; <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/algorithm/partition.html">partition</a> (tree&lt;K, V&gt; <span class="keyword">const</span>&amp; t, P <span class="keyword">const</span>&amp; p) {</div>
-<div class="line">      <span class="keyword">auto</span> f = [&amp;p](<span class="keyword">auto</span> <span class="keyword">const</span>&amp; acc, <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair.html">std::pair&lt;K, V&gt;</a> <span class="keyword">const</span>&amp; b) {</div>
+<div class="line">      <span class="keyword">auto</span> f = [&amp;p](</div>
+<div class="line">          <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair.html">std::pair&lt;tree&lt;K, V&gt;</a>, tree&lt;K, V&gt;&gt; <span class="keyword">const</span>&amp; acc, <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair.html">std::pair&lt;K, V&gt;</a> <span class="keyword">const</span>&amp; b) {</div>
 <div class="line">        <span class="keyword">auto</span> <span class="keyword">const</span>&amp; l = acc.first;</div>
 <div class="line">        <span class="keyword">auto</span> <span class="keyword">const</span>&amp; r = acc.second;</div>
 <div class="line">        <span class="keywordflow">if</span> (p (b))</div>
 <div class="line">          <span class="keywordflow">return</span> <a name="a4"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair/make_pair.html">std::make_pair</a> (insert (l, b), r);</div>
 <div class="line">        <span class="keywordflow">return</span> <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair/make_pair.html">std::make_pair</a> (l, insert (r, b));</div>
 <div class="line">      };</div>
-<div class="line">      tree&lt;K, V&gt; <span class="keyword">const</span> empty{<a class="code" href="structpgs_1_1constructor.html">constructor&lt;empty_t&gt;</a>{}};</div>
+<div class="line">      tree&lt;K, V&gt; <span class="keyword">const</span> empty {<a class="code" href="structpgs_1_1constructor.html">constructor&lt;empty_t&gt;</a>{}};</div>
 <div class="line">      <span class="keywordflow">return</span> fold (t, <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair/make_pair.html">std::make_pair</a> (empty, empty), f);</div>
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="keyword">template</span> &lt;<span class="keyword">class</span> K, <span class="keyword">class</span> V&gt;</div>
 <div class="line">    <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair.html">std::pair&lt;K, V&gt;</a> <span class="keyword">const</span>&amp; min_binding (tree&lt;K, V&gt; <span class="keyword">const</span>&amp; t) {</div>
-<div class="line">      <span class="keywordflow">return</span> t.match&lt;<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair.html">std::pair&lt;K, V&gt;</a> <span class="keyword">const</span>&amp;&gt;(</div>
+<div class="line">      <span class="keywordflow">return</span> t.template match&lt;std::pair&lt;K, V&gt; <span class="keyword">const</span>&amp;&gt;(</div>
 <div class="line">        [](empty_t) -&gt; <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair.html">std::pair&lt;K, V&gt;</a> <span class="keyword">const</span>&amp; {  </div>
 <div class="line">         <span class="keywordflow">throw</span> <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/error/runtime_error.html">std::runtime_error</a>{<span class="stringliteral">&quot;min_binding&quot;</span>};</div>
 <div class="line">       },</div>
@@ -244,7 +242,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line">    <span class="keyword">template</span> &lt;<span class="keyword">class</span> K, <span class="keyword">class</span> V&gt;</div>
 <div class="line">    <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair.html">std::pair&lt;K, V&gt;</a> <span class="keyword">const</span>&amp; max_binding (tree&lt;K, V&gt; <span class="keyword">const</span>&amp; t) {</div>
-<div class="line">      <span class="keywordflow">return</span> t.match&lt;<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair.html">std::pair&lt;K, V&gt;</a> <span class="keyword">const</span>&amp;&gt;(</div>
+<div class="line">      <span class="keywordflow">return</span> t.template match&lt;std::pair&lt;K, V&gt; <span class="keyword">const</span>&amp;&gt;(</div>
 <div class="line">        [](empty_t) -&gt; <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair.html">std::pair&lt;K, V&gt;</a> <span class="keyword">const</span>&amp; {  </div>
 <div class="line">         <span class="keywordflow">throw</span> <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/error/runtime_error.html">std::runtime_error</a>{<span class="stringliteral">&quot;max_binding&quot;</span>};</div>
 <div class="line">       },</div>
@@ -282,9 +280,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">  <span class="keyword">private</span>:</div>
 <div class="line">    tree_type impl_; <span class="comment">//the root of the tree</span></div>
 <div class="line"></div>
+<div class="line">  <span class="keyword">private</span>:</div>
 <div class="line">    <span class="comment">//Extension constructor for internal use</span></div>
-<div class="line">    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line">    binary_search_tree (T&amp;&amp; n) : impl_ (std::forward&lt;T&gt; (n))</div>
+<div class="line">    <span class="keyword">template</span> &lt;</div>
+<div class="line">      <span class="keyword">class </span>T,</div>
+<div class="line">      <span class="keyword">class </span>= pgs::enable_if_t&lt;</div>
+<div class="line">        <a name="_a5"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/is_same.html">std::is_same&lt;pgs::decay_t&lt;T&gt;</a>, tree_type&gt;::value, <span class="keywordtype">void</span>&gt;</div>
+<div class="line">    &gt;</div>
+<div class="line">    binary_search_tree (T&amp;&amp; n) : impl_{std::forward&lt;T&gt; (n)}</div>
 <div class="line">    {}</div>
 <div class="line"></div>
 <div class="line">  <span class="keyword">public</span>:</div>
@@ -315,15 +318,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">    <span class="comment">//binding `k`</span></div>
 <div class="line">    self_type <span class="keyword">remove</span> (K <span class="keyword">const</span>&amp; k) <span class="keyword">const</span> {</div>
 <div class="line">      <span class="keywordflow">return</span> this-&gt;fold (self_type {},</div>
-<div class="line">        [&amp;k](self_type <span class="keyword">const</span>&amp; acc, value_type <span class="keyword">const</span>&amp; p) {</div>
+<div class="line">        [&amp;k](self_type <span class="keyword">const</span>&amp; acc, value_type <span class="keyword">const</span>&amp; p) -&gt; self_type {</div>
 <div class="line">          <span class="keywordflow">return</span> k == p.first ? acc : acc.insert (p);</div>
 <div class="line">      });</div>
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">//Compute the number of bindings in the tree</span></div>
-<div class="line">    <a name="_a5"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/size_t.html">std::size_t</a> size ()<span class="keyword"> const </span>{</div>
+<div class="line">    <a name="_a6"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/size_t.html">std::size_t</a> size ()<span class="keyword"> const </span>{</div>
 <div class="line">      <span class="keywordflow">return</span> this-&gt;fold (<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/size_t.html">std::size_t</a>{0}</div>
-<div class="line">          , [](<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/size_t.html">std::size_t</a> acc, <span class="keyword">auto</span> <span class="keyword">const</span>&amp;) { <span class="keywordflow">return</span> ++acc; });</div>
+<div class="line">          , [](<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/size_t.html">std::size_t</a> acc, value_type <span class="keyword">const</span>&amp;) { <span class="keywordflow">return</span> ++acc; });</div>
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">//True if `k` is bound</span></div>
@@ -341,28 +344,28 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">    <span class="comment">//lexicographicaly on keys</span></div>
 <div class="line">    <span class="keyword">template</span> &lt;<span class="keyword">class</span> ItT&gt;</div>
 <div class="line">    ItT bindings (ItT dst)<span class="keyword"> const </span>{</div>
-<div class="line">      <span class="keywordflow">return</span> this-&gt;fold (dst, [](<span class="keyword">auto</span> dst, <span class="keyword">auto</span> <span class="keyword">const</span>&amp; n) { </div>
+<div class="line">      <span class="keywordflow">return</span> this-&gt;fold (dst, [](ItT dst, value_type <span class="keyword">const</span>&amp; n) { </div>
 <div class="line">          <span class="keywordflow">return</span> *dst++ = n; });</div>
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">//Check if all the bindings in the tree satisfy the predicate `p`</span></div>
 <div class="line">    <span class="keyword">template</span> &lt;<span class="keyword">class</span> P&gt;</div>
 <div class="line">    <span class="keywordtype">bool</span> for_all (P <span class="keyword">const</span>&amp; p)<span class="keyword"> const </span>{</div>
-<div class="line">      <span class="keywordflow">return</span> this-&gt;fold (<span class="keyword">true</span>, [&amp;p](<span class="keyword">auto</span> acc, <span class="keyword">auto</span> <span class="keyword">const</span>&amp; n) { </div>
+<div class="line">      <span class="keywordflow">return</span> this-&gt;fold (<span class="keyword">true</span>, [&amp;p](<span class="keywordtype">bool</span> acc, value_type <span class="keyword">const</span>&amp; n) { </div>
 <div class="line">          <span class="keywordflow">return</span> acc &amp;&amp; p (n); });</div>
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">//True if at least one binding satisfies the predicate `p`</span></div>
 <div class="line">    <span class="keyword">template</span> &lt;<span class="keyword">class</span> P&gt;</div>
 <div class="line">    <span class="keywordtype">bool</span> exists (P <span class="keyword">const</span>&amp; p)<span class="keyword"> const </span>{</div>
-<div class="line">      <span class="keywordflow">return</span> fold (<span class="keyword">false</span>, [&amp;p](<span class="keyword">auto</span> acc, <span class="keyword">auto</span> <span class="keyword">const</span>&amp; n) {</div>
+<div class="line">      <span class="keywordflow">return</span> fold (<span class="keyword">false</span>, [&amp;p](<span class="keywordtype">bool</span> acc, value_type <span class="keyword">const</span>&amp; n) {</div>
 <div class="line">          <span class="keywordflow">return</span> acc || p (n); });</div>
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">//Compute a tree all the bindings that satisfy the predicate &#39;p&#39;</span></div>
 <div class="line">    <span class="keyword">template</span> &lt;<span class="keyword">class</span> P&gt;</div>
 <div class="line">    self_type filter (P <span class="keyword">const</span>&amp; p)<span class="keyword"> const </span>{</div>
-<div class="line">      <span class="keyword">auto</span> f = [&amp;p](<span class="keyword">auto</span> <span class="keyword">const</span>&amp; acc, value_type <span class="keyword">const</span>&amp; b) {</div>
+<div class="line">      <span class="keyword">auto</span> f = [&amp;p](self_type <span class="keyword">const</span>&amp; acc, value_type <span class="keyword">const</span>&amp; b) {</div>
 <div class="line">        <span class="keywordflow">if</span> (p (b))</div>
 <div class="line">          <span class="keywordflow">return</span> acc.insert (b);</div>
 <div class="line">        <span class="keywordflow">return</span> acc;</div>
@@ -377,7 +380,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">    <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair.html">std::pair&lt;self_type, self_type&gt;</a> <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/algorithm/partition.html">partition</a> (P <span class="keyword">const</span>&amp; p)<span class="keyword"> const </span>{</div>
 <div class="line">      <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair.html">std::pair&lt;tree_type, tree_type&gt;</a> res{tree_detail::partition(impl_, p)};</div>
 <div class="line">      <span class="keywordflow">return</span> <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair/make_pair.html">std::make_pair</a> (</div>
-<div class="line">       self_type{<a name="a6"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/move.html">std::move</a>(res.first)}, self_type{<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/move.html">std::move</a> (res.second)});</div>
+<div class="line">       self_type{<a name="a7"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/move.html">std::move</a> (res.first)}, self_type{<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/move.html">std::move</a> (res.second)});</div>
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">//Computes a tree with the same keys but where `f` has been</span></div>
@@ -385,7 +388,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">    <span class="keyword">template</span> &lt;<span class="keyword">class</span> F&gt;</div>
 <div class="line">    <span class="keyword">auto</span> map (F f) -&gt; </div>
 <div class="line">      binary_search_tree&lt;K, decltype (f (std::declval&lt;V&gt;()))&gt; {</div>
-<div class="line">      <span class="keyword">auto</span> l = [=](<span class="keyword">auto</span> <span class="keyword">const</span>&amp; acc, value_type <span class="keyword">const</span>&amp; b) {</div>
+<div class="line">      <span class="keyword">auto</span> l = [=](self_type <span class="keyword">const</span>&amp; acc, value_type <span class="keyword">const</span>&amp; b) {</div>
 <div class="line">        <span class="keywordflow">return</span> acc.insert (<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair/make_pair.html">std::make_pair</a> (b.first, f (b.second)));</div>
 <div class="line">      };</div>
 <div class="line">      <span class="keywordflow">return</span> this-&gt;fold (self_type{}, l);</div>
@@ -405,13 +408,24 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line">  };</div>
 <div class="line"></div>
-<div class="line">  <span class="comment">//Factory function for creating a tree from a list</span></div>
 <div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> ItT&gt;</div>
-<div class="line">  <span class="keyword">auto</span> mk_tree (ItT <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/iterator/begin.html">begin</a>, ItT <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/iterator/end.html">end</a>) {</div>
-<div class="line">    <span class="keyword">using</span> node_t = <span class="keyword">typename</span> <a name="_a7"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/iterator/iterator_traits.html">std::iterator_traits&lt;ItT&gt;::value_type</a>;</div>
+<div class="line">  <span class="keyword">struct </span>tree_type_from_it {</div>
+<div class="line">    <span class="keyword">using</span> node_t = <span class="keyword">typename</span> <a name="_a8"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/iterator/iterator_traits.html">std::iterator_traits&lt;ItT&gt;::value_type</a>;</div>
 <div class="line">    <span class="keyword">using</span> key_t = <span class="keyword">typename</span> node_t::first_type;</div>
 <div class="line">    <span class="keyword">using</span> val_t = <span class="keyword">typename</span> node_t::second_type;</div>
 <div class="line">    <span class="keyword">using</span> tree_t = binary_search_tree&lt;key_t, val_t&gt;;</div>
+<div class="line"></div>
+<div class="line">    <span class="keyword">using</span> type = tree_t;</div>
+<div class="line">  };</div>
+<div class="line"></div>
+<div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> ItT&gt;</div>
+<div class="line">  <span class="keyword">using</span> tree_type_from_it_t =<span class="keyword">typename</span> tree_type_from_it&lt;ItT&gt;::type;</div>
+<div class="line"></div>
+<div class="line"></div>
+<div class="line">  <span class="comment">//Factory function for creating a tree from a list</span></div>
+<div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> ItT&gt;</div>
+<div class="line">  tree_type_from_it_t&lt;ItT&gt; mk_tree (ItT <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/iterator/begin.html">begin</a>, ItT <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/iterator/end.html">end</a>) {</div>
+<div class="line">    <span class="keyword">using</span> tree_t = tree_type_from_it_t&lt;ItT&gt;;</div>
 <div class="line"></div>
 <div class="line">    tree_t l;</div>
 <div class="line">    <span class="keywordflow">for</span> (; begin != end; l = l.insert(*begin++));</div>
@@ -430,7 +444,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">  ASSERT_TRUE(t.empty ());</div>
 <div class="line"></div>
 <div class="line">  tree_t tt = t.insert (</div>
-<div class="line">   <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair/make_pair.html">std::make_pair</a> (1, <a name="_a8"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/string/basic_string.html">std::string</a> (<span class="stringliteral">&quot;foo&quot;</span>))).</div>
+<div class="line">   <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair/make_pair.html">std::make_pair</a> (1, <a name="_a9"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/string/basic_string.html">std::string</a> (<span class="stringliteral">&quot;foo&quot;</span>))).</div>
 <div class="line">    insert (<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair/make_pair.html">std::make_pair</a> (2, <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/string/basic_string.html">std::string</a> (<span class="stringliteral">&quot;bar&quot;</span>)));</div>
 <div class="line"></div>
 <div class="line">  ASSERT_EQ(tt.size (), 2);</div>
@@ -443,7 +457,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><span class="keyword">namespace </span><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/namespacestd.html">std</a> {<span class="comment">//Hack!</span></div>
 <div class="line"></div>
 <div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> K, <span class="keyword">class</span> V&gt;</div>
-<div class="line">  <a name="_a9"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/io/basic_ostream.html">std::ostream</a>&amp; operator &lt;&lt; (std::ostream&amp; os, std::pair&lt;K, V&gt; <span class="keyword">const</span>&amp; p) {</div>
+<div class="line">  <a name="_a10"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/io/basic_ostream.html">std::ostream</a>&amp; operator &lt;&lt; (std::ostream&amp; os, std::pair&lt;K, V&gt; <span class="keyword">const</span>&amp; p) {</div>
 <div class="line">    <span class="keywordflow">return</span> os &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; p.first &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; p.second &lt;&lt; <span class="stringliteral">&quot;)&quot;</span>;</div>
 <div class="line">  }</div>
 <div class="line"></div>
@@ -469,19 +483,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">  EXPECT_EQ (ages.lookup (<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/string/basic_string.html">std::string</a> {<span class="stringliteral">&quot;sally&quot;</span>}), 25);</div>
 <div class="line">  EXPECT_THROW (ages.lookup (<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/string/basic_string.html">std::string</a> {<span class="stringliteral">&quot;gru&quot;</span>}), <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/error/runtime_error.html">std::runtime_error</a>);</div>
 <div class="line"></div>
-<div class="line">  <a name="_a10"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/io/basic_ostream.html">std::cout</a> &lt;&lt; <span class="stringliteral">&quot;Bindings : &quot;</span>;</div>
+<div class="line">  <a name="_a11"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/io/basic_ostream.html">std::cout</a> &lt;&lt; <span class="stringliteral">&quot;Bindings : &quot;</span>;</div>
 <div class="line">  ages.bindings (</div>
-<div class="line">    <a name="_a11"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/iterator/ostream_iterator.html">std::ostream_iterator</a>&lt;<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair.html">std::pair&lt;std::string, int&gt;</a>&gt;(std::cout, <span class="stringliteral">&quot; &quot;</span>)</div>
+<div class="line">    <a name="_a12"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/iterator/ostream_iterator.html">std::ostream_iterator</a>&lt;<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair.html">std::pair&lt;std::string, int&gt;</a>&gt;(std::cout, <span class="stringliteral">&quot; &quot;</span>)</div>
 <div class="line">  );</div>
 <div class="line">  std::cout &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line"></div>
-<div class="line">  <span class="keyword">auto</span> everyone_of_age = [](<span class="keyword">auto</span> <span class="keyword">const</span>&amp; b) { <span class="keywordflow">return</span> b.second &gt; 21; };</div>
+<div class="line">  <span class="keyword">auto</span> everyone_of_age = [](<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair.html">std::pair&lt;std::string, int&gt;</a> <span class="keyword">const</span>&amp; b) { <span class="keywordflow">return</span> b.second &gt; 21; };</div>
 <div class="line">  EXPECT_FALSE (ages.for_all (everyone_of_age));</div>
-<div class="line">  <span class="keyword">auto</span> no_senior_citizen = [](<span class="keyword">auto</span> <span class="keyword">const</span>&amp; b) { <span class="keywordflow">return</span> b.second &lt; 70; };</div>
+<div class="line">  <span class="keyword">auto</span> no_senior_citizen = [](node_t <span class="keyword">const</span>&amp; b) { <span class="keywordflow">return</span> b.second &lt; 70; };</div>
 <div class="line">  EXPECT_TRUE (ages.for_all (no_senior_citizen));</div>
-<div class="line">  <span class="keyword">auto</span> sebastien = [](<span class="keyword">auto</span> <span class="keyword">const</span>&amp; b) { <span class="keywordflow">return</span> b.first == <span class="stringliteral">&quot;sebastien&quot;</span>; };</div>
+<div class="line">  <span class="keyword">auto</span> sebastien = [](node_t <span class="keyword">const</span>&amp; b) { <span class="keywordflow">return</span> b.first == <span class="stringliteral">&quot;sebastien&quot;</span>; };</div>
 <div class="line">  EXPECT_TRUE (ages.exists (sebastien));</div>
-<div class="line">  <span class="keyword">auto</span> gru = [](<span class="keyword">auto</span> <span class="keyword">const</span>&amp; b) { <span class="keywordflow">return</span> b.first == <span class="stringliteral">&quot;gru&quot;</span>; };</div>
+<div class="line">  <span class="keyword">auto</span> gru = [](node_t <span class="keyword">const</span>&amp; b) { <span class="keywordflow">return</span> b.first == <span class="stringliteral">&quot;gru&quot;</span>; };</div>
 <div class="line">  EXPECT_FALSE (ages.exists (gru));</div>
 <div class="line">  <span class="keyword">auto</span> logans_run = ages.filter ([](node_t <span class="keyword">const</span>&amp; b) { <span class="keywordflow">return</span> b.second &gt;= 35; });</div>
 <div class="line">  EXPECT_EQ (logans_run.size (), 2);</div>
@@ -498,7 +512,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">  );</div>
 <div class="line">  std::cout &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line"></div>
-<div class="line">  ages = ages.map ([](<span class="keyword">auto</span> age) { <span class="keywordflow">return</span> ++age; });</div>
+<div class="line">  ages = ages.map ([](<span class="keywordtype">int</span> age) { <span class="keywordflow">return</span> ++age; });</div>
 <div class="line">  EXPECT_EQ(ages.lookup (<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/string/basic_string.html">std::string</a>{<span class="stringliteral">&quot;henry&quot;</span>}), 67);</div>
 <div class="line"></div>
 <div class="line">  EXPECT_EQ (<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair/make_pair.html">std::make_pair</a> (<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/string/basic_string.html">std::string</a>{<span class="stringliteral">&quot;henry&quot;</span>}, 67), ages.min_binding ());</div>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>Pretty Good Sum Type: recursive_union.hpp File Reference</title>
+<title>Pretty Good Sum Type: pgs/recursive_union.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -79,6 +79,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_f55933783c440e847a0660c85eb93e05.html">pgs</a></li>  </ul>
+</div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
@@ -91,10 +95,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <p>A type modeling a "recursive union".  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="logical_8hpp_source.html">logical.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="recursive__wrapper_8hpp_source.html">recursive_wrapper.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="type__traits_8hpp_source.html">type_traits.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="logical_8hpp_source.html">pgs/logical.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="recursive__wrapper_8hpp_source.html">pgs/recursive_wrapper.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="type__traits_8hpp_source.html">pgs/type_traits.hpp</a>&gt;</code><br />
 <code>#include &lt;stdexcept&gt;</code><br />
+<code>#include &lt;type_traits&gt;</code><br />
+<code>#include &lt;iostream&gt;</code><br />
 </div>
 <p><a href="recursive__union_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -110,10 +116,10 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A type to model an overload.  <a href="structpgs_1_1overload__tag.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpgs_1_1recursive__union__dereference.html">pgs::recursive_union_dereference&lt; is_recursive_wrapper, T, Ts &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dereference the value field in a <code><a class="el" href="structpgs_1_1recursive__union.html" title="recursive union<> primary template ">recursive_union</a>&lt;&gt;</code>. This case handles values that are not <code><a class="el" href="classpgs_1_1recursive__wrapper.html" title="A type to enable working around the absence of recursive types. ">recursive_wrapper</a></code> instances.  <a href="structpgs_1_1recursive__union__dereference.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dereference the value field in a <code><a class="el" href="structpgs_1_1recursive__union.html" title="recursive union<> primary template ">recursive_union</a>&lt;&gt;</code>. This case handles values that are not <code><a class="el" href="classpgs_1_1recursive__wrapper.html" title="types ">recursive_wrapper</a></code> instances.  <a href="structpgs_1_1recursive__union__dereference.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpgs_1_1recursive__union__dereference_3_01true_00_01_t_00_01_ts_8_8_8_01_4.html">pgs::recursive_union_dereference&lt; true, T, Ts... &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dereference the value field in a <code><a class="el" href="structpgs_1_1recursive__union.html" title="recursive union<> primary template ">recursive_union</a>&lt;&gt;</code>. This specialization handles values that are <code><a class="el" href="classpgs_1_1recursive__wrapper.html" title="A type to enable working around the absence of recursive types. ">recursive_wrapper</a></code> instances.  <a href="structpgs_1_1recursive__union__dereference_3_01true_00_01_t_00_01_ts_8_8_8_01_4.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dereference the value field in a <code><a class="el" href="structpgs_1_1recursive__union.html" title="recursive union<> primary template ">recursive_union</a>&lt;&gt;</code>. This specialization handles values that are <code><a class="el" href="classpgs_1_1recursive__wrapper.html" title="types ">recursive_wrapper</a></code> instances.  <a href="structpgs_1_1recursive__union__dereference_3_01true_00_01_t_00_01_ts_8_8_8_01_4.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpgs_1_1recursive__union__indexer.html">pgs::recursive_union_indexer&lt; I, T, Ts &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The purpose of this type is to walk a <code><a class="el" href="structpgs_1_1recursive__union.html" title="recursive union<> primary template ">recursive_union</a>&lt;&gt;</code> and return the value field of the <code>I</code>th union in the chain.  <a href="structpgs_1_1recursive__union__indexer.html#details">More...</a><br /></td></tr>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>Pretty Good Sum Type: type_traits.hpp Source File</title>
+<title>Pretty Good Sum Type: pgs/type_traits.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -65,7 +65,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="files.html"><span>File&#160;List</span></a></li>
     </ul>
   </div>
-</div><!-- top -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -80,6 +79,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_f55933783c440e847a0660c85eb93e05.html">pgs</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">type_traits.hpp</div>  </div>
@@ -93,33 +97,57 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacepgs.html">pgs</a> { </div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;  <span class="keyword">namespace </span>detail {</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keyword">struct </span>no {};</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;  }<span class="comment">//namespace detail</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  <span class="comment">//-- Borrow from the future</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  <span class="comment">//C++14</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  <span class="keyword">using</span> decay_t = <span class="keyword">typename</span> <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/decay.html">std::decay&lt;T&gt;::type</a>;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  <span class="comment">//C++14</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  <span class="keyword">template</span> &lt;<span class="keywordtype">bool</span> B, <span class="keyword">class</span> T = <span class="keywordtype">void</span>&gt;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  <span class="keyword">using</span> enable_if_t = <span class="keyword">typename</span> <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/enable_if.html">std::enable_if&lt;B, T&gt;::type</a>;</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> F, <span class="keyword">typename</span>...Args&gt;</div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="structpgs_1_1is__callable.html">   25</a></span>&#160;  <span class="keyword">struct </span><a class="code" href="structpgs_1_1is__callable.html">is_callable</a> {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class </span>G, <span class="keyword">class</span>...Qs&gt;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">static</span> <span class="keyword">auto</span> check(G g, Qs...qs) -&gt; decltype(g(qs...));</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">static</span> detail::no check(...);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">static</span> constexpr <span class="keywordtype">bool</span> value = </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;     !<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/is_same.html">std::is_same</a>&lt;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        detail::no</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;      , decltype(check (std::declval&lt;F&gt;(), std::declval&lt;Args&gt;()...))&gt;::value;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  };</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;}<span class="comment">//namespace pgs</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#endif </span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; <span class="comment">// C++17</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">class</span> B&gt;</div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="structpgs_1_1negation.html">   26</a></span>&#160;  <span class="keyword">struct </span><a class="code" href="structpgs_1_1negation.html">negation</a> : <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/integral_constant.html">std::integral_constant</a> &lt;bool, !B::value&gt;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  {};</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <span class="comment">//--</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keyword">class</span> U&gt;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">using</span> <a class="code" href="structpgs_1_1negation.html">not_is_same</a> = <a class="code" href="structpgs_1_1negation.html">negation&lt;std::is_same&lt;T, U&gt;</a>&gt;;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">namespace </span>detail {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">struct </span>no {};</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  }<span class="comment">//namespace detail</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> F, <span class="keyword">typename</span>...Args&gt;</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="structpgs_1_1is__callable.html">   46</a></span>&#160;  <span class="keyword">struct </span><a class="code" href="structpgs_1_1is__callable.html">is_callable</a> {</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class </span>G, <span class="keyword">class</span>...Qs&gt;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">static</span> <span class="keyword">auto</span> check(G g, Qs...qs) -&gt; decltype(g(qs...));</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">static</span> detail::no check(...);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">static</span> constexpr <span class="keywordtype">bool</span> value = </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;     !<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/is_same.html">std::is_same</a>&lt;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        detail::no</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      , decltype(check (std::declval&lt;F&gt;(), std::declval&lt;Args&gt;()...))&gt;::value;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  };</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}<span class="comment">//namespace pgs</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#endif </span></div>
 <div class="ttc" id="is_same_html"><div class="ttname"><a href="http://en.cppreference.com/w/cpp/types/is_same.html">std::is_same</a></div></div>
 <div class="ttc" id="namespacepgs_html"><div class="ttname"><a href="namespacepgs.html">pgs</a></div><div class="ttdef"><b>Definition:</b> logical.hpp:13</div></div>
-<div class="ttc" id="structpgs_1_1is__callable_html"><div class="ttname"><a href="structpgs_1_1is__callable.html">pgs::is_callable</a></div><div class="ttdoc">Metafunction to determine if an instance of a type F can be applied to a tuple of parameters with typ...</div><div class="ttdef"><b>Definition:</b> type_traits.hpp:25</div></div>
+<div class="ttc" id="enable_if_html"><div class="ttname"><a href="http://en.cppreference.com/w/cpp/types/enable_if.html">std::enable_if</a></div></div>
+<div class="ttc" id="structpgs_1_1negation_html"><div class="ttname"><a href="structpgs_1_1negation.html">pgs::negation</a></div><div class="ttdef"><b>Definition:</b> type_traits.hpp:26</div></div>
+<div class="ttc" id="integral_constant_html"><div class="ttname"><a href="http://en.cppreference.com/w/cpp/types/integral_constant.html">std::integral_constant</a></div></div>
+<div class="ttc" id="decay_html"><div class="ttname"><a href="http://en.cppreference.com/w/cpp/types/decay.html">std::decay</a></div></div>
+<div class="ttc" id="structpgs_1_1is__callable_html"><div class="ttname"><a href="structpgs_1_1is__callable.html">pgs::is_callable</a></div><div class="ttdoc">Metafunction to determine if an instance of a type F can be applied to a tuple of parameters with typ...</div><div class="ttdef"><b>Definition:</b> type_traits.hpp:46</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

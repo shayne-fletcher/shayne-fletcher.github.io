@@ -112,22 +112,22 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="str
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a40f7d6cc93b8c08691e4155df8f0fe9c"><td class="memTemplParams" colspan="2"><a class="anchor" id="a40f7d6cc93b8c08691e4155df8f0fe9c"></a>
-template&lt;class O , class F , class... Fs, class  = typename std::enable_if&lt;is_callable&lt;F, T&gt;::value&gt;::type&gt; </td></tr>
+template&lt;class O , class F , class... Fs, class  = pgs::enable_if_t&lt;is_callable&lt;F, T&gt;::value, void&gt;&gt; </td></tr>
 <tr class="memitem:a40f7d6cc93b8c08691e4155df8f0fe9c"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="structpgs_1_1recursive__union__visitor.html#a27d499a71edc5fc8a7b512c211288d94">result_type</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structpgs_1_1recursive__union__visitor.html#a40f7d6cc93b8c08691e4155df8f0fe9c">visit</a> (<a class="el" href="structpgs_1_1overload__tag.html">overload_tag</a>&lt; O &gt;, T const &amp;t, F &amp;&amp;f, Fs &amp;&amp;...)</td></tr>
 <tr class="memdesc:a40f7d6cc93b8c08691e4155df8f0fe9c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>f</code> is callable on <code>t</code> (of type <code>T const&amp;</code>) <br /></td></tr>
 <tr class="separator:a40f7d6cc93b8c08691e4155df8f0fe9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca751e0d80bb77c1c1f32d6fad7a02a9"><td class="memTemplParams" colspan="2"><a class="anchor" id="aca751e0d80bb77c1c1f32d6fad7a02a9"></a>
-template&lt;class F , class O , class... Fs, class  = typename std::enable_if&lt;!is_callable&lt;F, T&gt;::value&gt;::type&gt; </td></tr>
+template&lt;class F , class O , class... Fs, class  = pgs::enable_if_t&lt;!is_callable&lt;F, T&gt;::value, void&gt;&gt; </td></tr>
 <tr class="memitem:aca751e0d80bb77c1c1f32d6fad7a02a9"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="structpgs_1_1recursive__union__visitor.html#a27d499a71edc5fc8a7b512c211288d94">result_type</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structpgs_1_1recursive__union__visitor.html#aca751e0d80bb77c1c1f32d6fad7a02a9">visit</a> (<a class="el" href="structpgs_1_1overload__tag.html">overload_tag</a>&lt; O &gt; o, T const &amp;t, F &amp;&amp;, Fs &amp;&amp;...fs)</td></tr>
 <tr class="memdesc:aca751e0d80bb77c1c1f32d6fad7a02a9"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>f</code> is not callable on <code>t</code> (of type <code>T const&amp;</code>), recurse <br /></td></tr>
 <tr class="separator:aca751e0d80bb77c1c1f32d6fad7a02a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4583f8d647429bf4187cfe5d030a5b25"><td class="memTemplParams" colspan="2"><a class="anchor" id="a4583f8d647429bf4187cfe5d030a5b25"></a>
-template&lt;class O , class F , class... Fs, class  = typename std::enable_if&lt;is_callable&lt;F, T&gt;::value&gt;::type&gt; </td></tr>
+template&lt;class O , class F , class... Fs, class  = pgs::enable_if_t&lt;is_callable&lt;F, T&gt;::value, void&gt;&gt; </td></tr>
 <tr class="memitem:a4583f8d647429bf4187cfe5d030a5b25"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="structpgs_1_1recursive__union__visitor.html#a27d499a71edc5fc8a7b512c211288d94">result_type</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structpgs_1_1recursive__union__visitor.html#a4583f8d647429bf4187cfe5d030a5b25">visit</a> (<a class="el" href="structpgs_1_1overload__tag.html">overload_tag</a>&lt; O &gt;, T &amp;t, F &amp;&amp;f, Fs &amp;&amp;...)</td></tr>
 <tr class="memdesc:a4583f8d647429bf4187cfe5d030a5b25"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>f</code> is callable on <code>t</code> (of type <code>T&amp;</code>) <br /></td></tr>
 <tr class="separator:a4583f8d647429bf4187cfe5d030a5b25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90102e64a06b6b746c05ab627eb9b3e8"><td class="memTemplParams" colspan="2"><a class="anchor" id="a90102e64a06b6b746c05ab627eb9b3e8"></a>
-template&lt;class F , class O , class... Fs, class  = typename std::enable_if&lt;!is_callable&lt;F, T&gt;::value&gt;::type&gt; </td></tr>
+template&lt;class F , class O , class... Fs, class  = pgs::enable_if_t&lt;!is_callable&lt;F, T&gt;::value, void&gt;&gt; </td></tr>
 <tr class="memitem:a90102e64a06b6b746c05ab627eb9b3e8"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="structpgs_1_1recursive__union__visitor.html#a27d499a71edc5fc8a7b512c211288d94">result_type</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structpgs_1_1recursive__union__visitor.html#a90102e64a06b6b746c05ab627eb9b3e8">visit</a> (<a class="el" href="structpgs_1_1overload__tag.html">overload_tag</a>&lt; O &gt; o, T &amp;t, F &amp;&amp;, Fs &amp;&amp;...fs)</td></tr>
 <tr class="memdesc:a90102e64a06b6b746c05ab627eb9b3e8"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>f</code> is not callable on <code>t</code> (of type <code>T&amp;</code>) <br /></td></tr>
 <tr class="separator:a90102e64a06b6b746c05ab627eb9b3e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -147,7 +147,7 @@ struct pgs::recursive_union_visitor&lt; R, T, Ts &gt;</h3>
 </dl>
 <p>If the <code>f</code> (of type <code>F</code>) under consideration can be applied to <code>t</code> (that is, applied to a <code>T</code>) do so, else continue searching by stripping <code>f</code> off the head of the parameter pack and recurively invoking <code>visit</code>. </p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="recursive__union_8hpp_source.html">recursive_union.hpp</a></li>
+<li>pgs/<a class="el" href="recursive__union_8hpp_source.html">recursive_union.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

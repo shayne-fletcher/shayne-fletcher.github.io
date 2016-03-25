@@ -108,16 +108,15 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpgs_1_1recursive__union_3_01_t_00_01_ts_8_8_8_01_4.html#af149226d99b3fa31ac17d440abb7b062">recursive_union</a> ()</td></tr>
 <tr class="memdesc:af149226d99b3fa31ac17d440abb7b062"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default ctor. <br /></td></tr>
 <tr class="separator:af149226d99b3fa31ac17d440abb7b062"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6c23ab297ae1ad34435df19450125dd"><td class="memTemplParams" colspan="2"><a class="anchor" id="ab6c23ab297ae1ad34435df19450125dd"></a>
-template&lt;class... Args&gt; </td></tr>
+<tr class="memitem:ab6c23ab297ae1ad34435df19450125dd"><td class="memTemplParams" colspan="2">template&lt;class... Args&gt; </td></tr>
 <tr class="memitem:ab6c23ab297ae1ad34435df19450125dd"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structpgs_1_1recursive__union_3_01_t_00_01_ts_8_8_8_01_4.html#ab6c23ab297ae1ad34435df19450125dd">recursive_union</a> (<a class="el" href="structpgs_1_1constructor.html">constructor</a>&lt; T &gt;, Args &amp;&amp;...args)</td></tr>
-<tr class="memdesc:ab6c23ab297ae1ad34435df19450125dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct (a <code>T</code>) into <code>v</code> <br /></td></tr>
+<tr class="memdesc:ab6c23ab297ae1ad34435df19450125dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <code>T</code> into <code>v</code>  <a href="#ab6c23ab297ae1ad34435df19450125dd">More...</a><br /></td></tr>
 <tr class="separator:ab6c23ab297ae1ad34435df19450125dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a82a57ed6cc20a52119117a607efb17"><td class="memTemplParams" colspan="2">template&lt;class U , class... Args, std::enable_if_t&lt;                      and_&lt;                          is_recursive_wrapper&lt; T &gt;               , std::is_same&lt; U, recursive_wrapper_unwrap_t&lt; T &gt;&gt;&gt;::value, int &gt;  = 0&gt; </td></tr>
+<tr class="memitem:a5a82a57ed6cc20a52119117a607efb17"><td class="memTemplParams" colspan="2">template&lt;class U , class... Args, pgs::enable_if_t&lt;                  is_recursive_wrapper_containing&lt; T, U &gt;::value, int &gt;  = 0&gt; </td></tr>
 <tr class="memitem:a5a82a57ed6cc20a52119117a607efb17"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structpgs_1_1recursive__union_3_01_t_00_01_ts_8_8_8_01_4.html#a5a82a57ed6cc20a52119117a607efb17">recursive_union</a> (<a class="el" href="structpgs_1_1constructor.html">constructor</a>&lt; U &gt;, Args &amp;&amp;...args) noexcept(<a class="elRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/is_constructible.html">std::is_nothrow_constructible</a>&lt; U, Args... &gt;::value)</td></tr>
-<tr class="memdesc:a5a82a57ed6cc20a52119117a607efb17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct (a <code><a class="el" href="classpgs_1_1recursive__wrapper.html" title="A type to enable working around the absence of recursive types. ">recursive_wrapper</a>&lt;T&gt;</code>) into <code>v</code>  <a href="#a5a82a57ed6cc20a52119117a607efb17">More...</a><br /></td></tr>
+<tr class="memdesc:a5a82a57ed6cc20a52119117a607efb17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct (a <code><a class="el" href="classpgs_1_1recursive__wrapper.html" title="types ">recursive_wrapper</a>&lt;T&gt;</code>) into <code>v</code>  <a href="#a5a82a57ed6cc20a52119117a607efb17">More...</a><br /></td></tr>
 <tr class="separator:a5a82a57ed6cc20a52119117a607efb17"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5260f7157140e05b302640fb8cececa"><td class="memTemplParams" colspan="2">template&lt;class U , class... Args, std::enable_if_t&lt;                  !and_&lt;                          is_recursive_wrapper&lt; T &gt;               , std::is_same&lt; U, recursive_wrapper_unwrap_t&lt; T &gt;&gt;&gt;::value, int &gt;  = 0&gt; </td></tr>
+<tr class="memitem:aa5260f7157140e05b302640fb8cececa"><td class="memTemplParams" colspan="2">template&lt;class U , class... Args, pgs::enable_if_t&lt;                  and_&lt;                                  not_is_same&lt; T, U &gt;                       , not_is_recursive_wrapper_containing&lt; T, U &gt;&gt;::value, int &gt;  = 0&gt; </td></tr>
 <tr class="memitem:aa5260f7157140e05b302640fb8cececa"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structpgs_1_1recursive__union_3_01_t_00_01_ts_8_8_8_01_4.html#aa5260f7157140e05b302640fb8cececa">recursive_union</a> (<a class="el" href="structpgs_1_1constructor.html">constructor</a>&lt; U &gt; t, Args &amp;&amp;...args) noexcept(                           <a class="elRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/is_constructible.html">std::is_nothrow_constructible</a>&lt; Ts..., <a class="el" href="structpgs_1_1constructor.html">constructor</a>&lt; U &gt;, Args... &gt;::value               )</td></tr>
 <tr class="memdesc:aa5260f7157140e05b302640fb8cececa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct into <code>r</code>  <a href="#aa5260f7157140e05b302640fb8cececa">More...</a><br /></td></tr>
 <tr class="separator:aa5260f7157140e05b302640fb8cececa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -165,13 +164,54 @@ struct pgs::recursive_union&lt; T, Ts... &gt;</h3>
   </dd>
 </dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="ab6c23ab297ae1ad34435df19450125dd"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class... Ts&gt; </div>
+<div class="memtemplate">
+template&lt;class... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpgs_1_1recursive__union.html">pgs::recursive_union</a>&lt; T, Ts... &gt;::<a class="el" href="structpgs_1_1recursive__union.html">recursive_union</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structpgs_1_1constructor.html">constructor</a>&lt; T &gt;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Construct a <code>T</code> into <code>v</code> </p>
+<p><code>T</code> and <code>U</code> are the same </p>
+
+</div>
+</div>
 <a class="anchor" id="a5a82a57ed6cc20a52119117a607efb17"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class T , class... Ts&gt; </div>
 <div class="memtemplate">
-template&lt;class U , class... Args, std::enable_if_t&lt;                      and_&lt;                          is_recursive_wrapper&lt; T &gt;               , std::is_same&lt; U, recursive_wrapper_unwrap_t&lt; T &gt;&gt;&gt;::value, int &gt;  = 0&gt; </div>
+template&lt;class U , class... Args, pgs::enable_if_t&lt;                  is_recursive_wrapper_containing&lt; T, U &gt;::value, int &gt;  = 0&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -201,8 +241,8 @@ template&lt;class U , class... Args, std::enable_if_t&lt;                      a
 </table>
 </div><div class="memdoc">
 
-<p>Construct (a <code><a class="el" href="classpgs_1_1recursive__wrapper.html" title="A type to enable working around the absence of recursive types. ">recursive_wrapper</a>&lt;T&gt;</code>) into <code>v</code> </p>
-<p><code>U</code> is not <code>T</code> but <code>T</code> is a recursive wrapper and <code>U</code> is the type contained in <code>T</code> </p>
+<p>Construct (a <code><a class="el" href="classpgs_1_1recursive__wrapper.html" title="types ">recursive_wrapper</a>&lt;T&gt;</code>) into <code>v</code> </p>
+<p><code>T</code> and <code>U</code> are different but <code>T</code> is a recursive wrapper and <code>U</code> is the type contained in <code>T</code> </p>
 
 </div>
 </div>
@@ -212,7 +252,7 @@ template&lt;class U , class... Args, std::enable_if_t&lt;                      a
 <div class="memtemplate">
 template&lt;class T , class... Ts&gt; </div>
 <div class="memtemplate">
-template&lt;class U , class... Args, std::enable_if_t&lt;                  !and_&lt;                          is_recursive_wrapper&lt; T &gt;               , std::is_same&lt; U, recursive_wrapper_unwrap_t&lt; T &gt;&gt;&gt;::value, int &gt;  = 0&gt; </div>
+template&lt;class U , class... Args, pgs::enable_if_t&lt;                  and_&lt;                                  not_is_same&lt; T, U &gt;                       , not_is_recursive_wrapper_containing&lt; T, U &gt;&gt;::value, int &gt;  = 0&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -243,7 +283,7 @@ template&lt;class U , class... Args, std::enable_if_t&lt;                  !and_
 </div><div class="memdoc">
 
 <p>Construct into <code>r</code> </p>
-<p><code>U</code> is not <code>T</code> and <code>T</code> is not a recursive wrapper or, <code>U</code> is not the type contained in <code>T</code> </p>
+<p><code>T</code> and <code>U</code> are different and <code>T</code> is not a reference wrapper with <code>U</code> the type contained in <code>T</code>. </p>
 
 </div>
 </div>
@@ -438,7 +478,7 @@ template&lt;class T , class... Ts&gt; </div>
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="recursive__union_8hpp_source.html">recursive_union.hpp</a></li>
+<li>pgs/<a class="el" href="recursive__union_8hpp_source.html">recursive_union.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
