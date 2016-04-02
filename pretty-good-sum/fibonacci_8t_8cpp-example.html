@@ -88,6 +88,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;iterator&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
 <div class="line"></div>
 <div class="line"><span class="preprocessor">#include &lt;gtest/gtest.h&gt;</span></div>
 <div class="line"></div>
@@ -96,81 +97,130 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">  <span class="keyword">using namespace </span><a class="code" href="namespacepgs.html">pgs</a>;</div>
 <div class="line">  </div>
 <div class="line">  <span class="keyword">struct </span>Nil {};</div>
-<div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt; <span class="keyword">struct </span>Cons;</div>
+<div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt; <span class="keyword">class </span>Cons;</div>
+<div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line">    <span class="keyword">using</span> stream = <a name="_a0"></a><a class="code" href="classpgs_1_1sum__type.html">sum_type</a> &lt;</div>
+<div class="line">        Nil</div>
+<div class="line">      , <a name="_a1"></a><a class="code" href="classpgs_1_1recursive__wrapper.html">recursive_wrapper&lt;Cons&lt;T&gt;</a>&gt;</div>
+<div class="line">      &gt;;</div>
+<div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line">    <span class="keyword">using</span> stream_thunk = <a name="_a2"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/functional/function.html">std::function&lt;stream&lt;T&gt;</a>()&gt;;</div>
+<div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt; <span class="keyword">inline</span> </div>
+<div class="line">    stream&lt;T&gt; force (stream_thunk&lt;T&gt; <span class="keyword">const</span>&amp; s) { </div>
+<div class="line">      <span class="keywordflow">return</span> s (); </div>
+<div class="line">  }</div>
 <div class="line"></div>
 <div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line">  <span class="keyword">using</span> stream = <a name="_a0"></a><a class="code" href="classpgs_1_1sum__type.html">sum_type &lt;Nil, recursive_wrapper&lt;Cons&lt;T&gt;</a>&gt;&gt;;</div>
+<div class="line">  <span class="keyword">class </span>Cons {</div>
+<div class="line">  <span class="keyword">public</span>:</div>
+<div class="line">    <span class="keyword">using</span> value_type = T;</div>
+<div class="line">    <span class="keyword">using</span> reference = value_type&amp;;</div>
+<div class="line">    <span class="keyword">using</span> const_reference = value_type <span class="keyword">const</span>&amp;;</div>
+<div class="line">    <span class="keyword">using</span> stream_type = stream&lt;value_type&gt;;</div>
 <div class="line"></div>
-<div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line">  <span class="keyword">struct </span>Cons {</div>
-<div class="line">    T h;</div>
-<div class="line">    <a name="_a1"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/functional/function.html">std::function&lt;stream&lt;T&gt;</a>()&gt; t;</div>
+<div class="line">  <span class="keyword">private</span>:</div>
+<div class="line">    <span class="keyword">using</span> stream_thunk_type = stream_thunk&lt;value_type&gt;;</div>
 <div class="line"></div>
-<div class="line">    Cons (T h, <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/functional/function.html">std::function</a>&lt;stream&lt;T&gt;()&gt; t) : h {h}, t {t}</div>
+<div class="line">  <span class="keyword">public</span>:</div>
+<div class="line">    <span class="keyword">template</span> &lt;<span class="keyword">class</span> U, <span class="keyword">class</span> V&gt;</div>
+<div class="line">    Cons (U&amp;&amp; h, V&amp;&amp; t) : </div>
+<div class="line">      h {std::forward&lt;U&gt; (h)}, t {std::forward&lt;V&gt; (t)}</div>
 <div class="line">    {}</div>
+<div class="line"></div>
+<div class="line">    const_reference hd ()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> h; }</div>
+<div class="line">    stream_type tl ()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> force (t); }</div>
+<div class="line"></div>
+<div class="line">  <span class="keyword">private</span>:</div>
+<div class="line">    value_type h;</div>
+<div class="line">    stream_thunk_type t;</div>
 <div class="line">  };</div>
 <div class="line"></div>
 <div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line">  T hd (stream&lt;T&gt; <span class="keyword">const</span>&amp; s) {</div>
-<div class="line">    <span class="keywordflow">return</span> s.template match&lt;T&gt; (</div>
-<div class="line">      [](Cons&lt;T&gt; <span class="keyword">const</span>&amp; l) -&gt; T { <span class="keywordflow">return</span> l.h; };</div>
-<div class="line">      [](<a name="_a2"></a><a class="code" href="structpgs_1_1otherwise.html">otherwise</a>) -&gt; T { <span class="keywordflow">throw</span> <a name="_a3"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/error/runtime_error.html">std::runtime_error</a> <span class="stringliteral">&quot;hd&quot;</span>; }</div>
+<div class="line">  T <span class="keyword">const</span> hd (stream&lt;T&gt; <span class="keyword">const</span>&amp; s) {</div>
+<div class="line">    <span class="keywordflow">return</span> s.template match&lt;T const&amp;&gt; (</div>
+<div class="line">        [](Cons&lt;T&gt; <span class="keyword">const</span>&amp; l) -&gt; T <span class="keyword">const</span>&amp; { <span class="keywordflow">return</span> l.hd (); }</div>
+<div class="line">      , [](<a name="_a3"></a><a class="code" href="structpgs_1_1otherwise.html">otherwise</a>) -&gt; T <span class="keyword">const</span> &amp; { <span class="keywordflow">throw</span> <a name="_a4"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/error/runtime_error.html">std::runtime_error</a> { <span class="stringliteral">&quot;hd&quot;</span> }; }</div>
 <div class="line">    );</div>
 <div class="line">  }</div>
 <div class="line"></div>
 <div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
 <div class="line">  stream&lt;T&gt; tl (stream&lt;T&gt; <span class="keyword">const</span>&amp; l) {</div>
 <div class="line">    <span class="keywordflow">return</span> l.template match &lt;stream&lt;T&gt;&gt; (</div>
-<div class="line">      [] (Cons&lt;T&gt; <span class="keyword">const</span>&amp; s) -&gt; stream &lt;T&gt; { <span class="keywordflow">return</span> s.tl (); },</div>
-<div class="line">      [] (<a class="code" href="structpgs_1_1otherwise.html">otherwise</a>) -&gt; stream&lt;T&gt; { <span class="keywordflow">throw</span> <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/error/runtime_error.html">std::runtime_error</a>{<span class="stringliteral">&quot;tl&quot;</span>}; }</div>
+<div class="line">      [] (Cons&lt;T&gt; <span class="keyword">const</span>&amp; s) -&gt; stream &lt;T&gt; { <span class="keywordflow">return</span> s.tl (); }</div>
+<div class="line">    , [] (<a class="code" href="structpgs_1_1otherwise.html">otherwise</a>&amp;) -&gt; stream&lt;T&gt; { <span class="keywordflow">throw</span> <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/error/runtime_error.html">std::runtime_error</a>{<span class="stringliteral">&quot;tl&quot;</span>}; }</div>
 <div class="line">    );</div>
 <div class="line">  }</div>
 <div class="line"></div>
 <div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keyword">class</span> D&gt;</div>
 <div class="line">  D take (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n, stream &lt;T&gt; <span class="keyword">const</span>&amp; s, D dst) {</div>
-<div class="line"></div>
-<div class="line">    <span class="keywordflow">if</span> (n == 0) { </div>
-<div class="line">      <span class="keywordflow">return</span> dst;</div>
-<div class="line">    }</div>
-<div class="line">    </div>
-<div class="line">    <span class="keywordflow">return</span> s.match&lt;D&gt;(</div>
-<div class="line">      [&amp;](Nil <span class="keyword">const</span>&amp; _) -&gt; D { <span class="keywordflow">return</span>  dst; },</div>
-<div class="line">      [&amp;](Cons&lt;T&gt; <span class="keyword">const</span>&amp; l) -&gt; D {<span class="keywordflow">return</span> take (n - 1, l.t (), *dst++ = l.h); }</div>
-<div class="line">    );</div>
+<div class="line">    <span class="keywordflow">return</span> (n == 0) ? dst :</div>
+<div class="line">      s.template match&lt;D&gt;(</div>
+<div class="line">         [&amp;](Nil <span class="keyword">const</span>&amp; _) -&gt; D { <span class="keywordflow">return</span>  dst; },</div>
+<div class="line">         [&amp;](Cons&lt;T&gt; <span class="keyword">const</span>&amp; l) -&gt; D { </div>
+<div class="line">           <span class="keywordflow">return</span> take (n - 1, l.tl (), *dst++ = l.hd ()); }</div>
+<div class="line">      );</div>
 <div class="line">  }</div>
 <div class="line"></div>
+<div class="line">  <span class="comment">//Natural numbers generator</span></div>
+<div class="line"></div>
+<div class="line">  <span class="keyword">class </span>natural_numbers_gen {</div>
+<div class="line">  <span class="keyword">private</span>:</div>
+<div class="line">    <span class="keyword">using</span> int_stream = stream&lt;int&gt;;</div>
+<div class="line">    </div>
+<div class="line">  <span class="keyword">private</span>:</div>
+<div class="line">    <span class="keywordtype">int</span> start;</div>
+<div class="line">    <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/functional/function.html">std::function&lt;int_stream(int)&gt;</a> from;</div>
+<div class="line">  </div>
+<div class="line">  <span class="keyword">public</span>:</div>
+<div class="line">    <span class="keyword">explicit</span> natural_numbers_gen (<span class="keywordtype">int</span> start) : start (start) {</div>
+<div class="line">      from = [<span class="keyword">this</span>](<span class="keywordtype">int</span> x) {</div>
+<div class="line">        <span class="keywordflow">return</span> int_stream{</div>
+<div class="line">          <a name="_a5"></a><a class="code" href="structpgs_1_1constructor.html">constructor &lt;Cons&lt;int&gt;</a>&gt;{}, x, [=]() {</div>
+<div class="line">            <span class="keywordflow">return</span> this-&gt;from (x + 1); }</div>
+<div class="line">        };</div>
+<div class="line">      };</div>
+<div class="line">    }</div>
+<div class="line"></div>
+<div class="line">   <span class="keyword">explicit</span> <span class="keyword">operator</span> int_stream()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> from (start); }</div>
+<div class="line">  };</div>
+<div class="line"></div>
+<div class="line">  <span class="comment">//Fibonacci numbers generator</span></div>
+<div class="line"></div>
+<div class="line">  <span class="keyword">class </span>fibonacci_numbers_gen {</div>
+<div class="line">  <span class="keyword">private</span>:</div>
+<div class="line">    <span class="keyword">using</span> int_stream = stream&lt;int&gt;;</div>
+<div class="line">    </div>
+<div class="line">  <span class="keyword">private</span>:</div>
+<div class="line">    <span class="keywordtype">int</span> start;</div>
+<div class="line">    <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/functional/function.html">std::function&lt;int_stream(int, int)&gt;</a> fib;</div>
+<div class="line">  </div>
+<div class="line">  <span class="keyword">public</span>:</div>
+<div class="line">    <span class="keyword">explicit</span> fibonacci_numbers_gen () {</div>
+<div class="line">      fib = [&amp;](<span class="keywordtype">int</span> a, <span class="keywordtype">int</span> b) {</div>
+<div class="line">        <span class="keywordflow">return</span> int_stream{</div>
+<div class="line">          <a class="code" href="structpgs_1_1constructor.html">constructor &lt;Cons&lt;int&gt;</a>&gt;{}, a, [a, b, <span class="keyword">this</span>]() { </div>
+<div class="line">            <span class="keywordflow">return</span> this-&gt;fib (b, a + b); }</div>
+<div class="line">        };</div>
+<div class="line">      };</div>
+<div class="line">    }</div>
+<div class="line"></div>
+<div class="line">    <span class="keyword">explicit</span> <span class="keyword">operator</span> int_stream()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> fib (0, 1); }</div>
+<div class="line">  };</div>
+<div class="line">  </div>
 <div class="line">}<span class="comment">//namespace&lt;anonymous&gt;</span></div>
 <div class="line"></div>
 <div class="line">TEST (<a class="code" href="namespacepgs.html">pgs</a>, natural_numbers) {</div>
 <div class="line"></div>
-<div class="line">  <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/functional/function.html">std::function&lt;stream&lt;int&gt;</a>(int)&gt; from;</div>
-<div class="line">  from = [&amp;](<span class="keywordtype">int</span> x) {</div>
-<div class="line">    <span class="keywordflow">return</span> stream&lt;int&gt;{ </div>
-<div class="line">      <a name="_a4"></a><a class="code" href="structpgs_1_1constructor.html">constructor &lt;Cons&lt;int&gt;</a>&gt;{}, x, [=]() { <span class="keywordflow">return</span> from (x + 1); }</div>
-<div class="line">    };</div>
-<div class="line">  };</div>
-<div class="line"></div>
-<div class="line">  stream&lt;int&gt; natural_numbers = from (0);</div>
-<div class="line"></div>
-<div class="line">  <a name="_a5"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/container/vector.html">std::vector&lt;int&gt;</a> s;</div>
-<div class="line">  take (10, natural_numbers, <a name="a6"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/iterator/back_inserter.html">std::back_inserter</a> (s));</div>
+<div class="line">  <a name="_a6"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/container/vector.html">std::vector&lt;int&gt;</a> s;</div>
+<div class="line">  take (10, stream&lt;int&gt; (natural_numbers_gen{0}), <a name="a7"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/iterator/back_inserter.html">std::back_inserter</a> (s));</div>
 <div class="line"></div>
 <div class="line">  ASSERT_EQ (s, (<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/container/vector.html">std::vector&lt;int&gt;</a>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}));</div>
 <div class="line">}</div>
 <div class="line"></div>
 <div class="line">TEST (<a class="code" href="namespacepgs.html">pgs</a>, fibonacci_sequence) {</div>
 <div class="line"></div>
-<div class="line">  <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/functional/function.html">std::function&lt;stream&lt;int&gt;</a>(int, int)&gt; fib;</div>
-<div class="line">  fib = [&amp;](<span class="keywordtype">int</span> a, <span class="keywordtype">int</span> b) {</div>
-<div class="line">    <span class="keywordflow">return</span> stream&lt;int&gt;{</div>
-<div class="line">      <a class="code" href="structpgs_1_1constructor.html">constructor &lt;Cons&lt;int&gt;</a>&gt;{}, a, [=]() { <span class="keywordflow">return</span> fib (b, a + b); }</div>
-<div class="line">    };</div>
-<div class="line">  };</div>
-<div class="line"></div>
-<div class="line">  stream&lt;int&gt; fibonacci_sequence = fib (0, 1);</div>
-<div class="line"></div>
 <div class="line">  <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/container/vector.html">std::vector&lt;int&gt;</a> s;</div>
-<div class="line">  take (10, fibonacci_sequence, <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/iterator/back_inserter.html">std::back_inserter</a>(s));</div>
+<div class="line">  take (10, stream&lt;int&gt; (fibonacci_numbers_gen {}), <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/iterator/back_inserter.html">std::back_inserter</a>(s));</div>
 <div class="line"></div>
 <div class="line">  ASSERT_EQ (s, (<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/container/vector.html">std::vector&lt;int&gt;</a>{0, 1, 1, 2, 3, 5, 8, 13, 21, 34}));</div>
 <div class="line">}</div>

@@ -131,7 +131,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line">    <span class="keyword">template</span> &lt;<span class="keyword">class</span> K, <span class="keyword">class</span> V&gt;</div>
 <div class="line">    <span class="keywordtype">bool</span> empty (tree&lt;K, V&gt; <span class="keyword">const</span>&amp; t) {</div>
-<div class="line">      <span class="keywordflow">return</span> t.is&lt;empty_t&gt; ();</div>
+<div class="line">      <span class="keywordflow">return</span> t.template is&lt;empty_t&gt; ();</div>
 <div class="line">    }</div>
 <div class="line"></div>
 <div class="line">    <span class="keyword">template</span> &lt;<span class="keyword">class</span> K, <span class="keyword">class</span> V, <span class="keyword">class</span> AccT, <span class="keyword">class</span> F&gt;</div>
@@ -483,11 +483,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">  EXPECT_EQ (ages.lookup (<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/string/basic_string.html">std::string</a> {<span class="stringliteral">&quot;sally&quot;</span>}), 25);</div>
 <div class="line">  EXPECT_THROW (ages.lookup (<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/string/basic_string.html">std::string</a> {<span class="stringliteral">&quot;gru&quot;</span>}), <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/error/runtime_error.html">std::runtime_error</a>);</div>
 <div class="line"></div>
-<div class="line">  <a name="_a11"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/io/basic_ostream.html">std::cout</a> &lt;&lt; <span class="stringliteral">&quot;Bindings : &quot;</span>;</div>
-<div class="line">  ages.bindings (</div>
-<div class="line">    <a name="_a12"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/iterator/ostream_iterator.html">std::ostream_iterator</a>&lt;<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair.html">std::pair&lt;std::string, int&gt;</a>&gt;(std::cout, <span class="stringliteral">&quot; &quot;</span>)</div>
-<div class="line">  );</div>
-<div class="line">  std::cout &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line">  <span class="comment">// std::cout &lt;&lt; &quot;Bindings : &quot;;</span></div>
+<div class="line">  <span class="comment">// ages.bindings (</span></div>
+<div class="line">  <span class="comment">//   std::ostream_iterator&lt;std::pair&lt;std::string, int&gt;&gt;(std::cout, &quot; &quot;)</span></div>
+<div class="line">  <span class="comment">// );</span></div>
+<div class="line">  <span class="comment">// std::cout &lt;&lt; &#39;\n&#39;;</span></div>
 <div class="line"></div>
 <div class="line">  <span class="keyword">auto</span> everyone_of_age = [](<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair.html">std::pair&lt;std::string, int&gt;</a> <span class="keyword">const</span>&amp; b) { <span class="keywordflow">return</span> b.second &gt; 21; };</div>
 <div class="line">  EXPECT_FALSE (ages.for_all (everyone_of_age));</div>
@@ -501,16 +501,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">  EXPECT_EQ (logans_run.size (), 2);</div>
 <div class="line"></div>
 <div class="line">  <span class="keyword">auto</span> pp = ages.partition ([](node_t <span class="keyword">const</span>&amp; b) { <span class="keywordflow">return</span> b.second &lt; 30; });</div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Those under 30: &quot;</span>;</div>
-<div class="line">  pp.first.bindings (</div>
-<div class="line">    <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/iterator/ostream_iterator.html">std::ostream_iterator</a>&lt;<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair.html">std::pair&lt;std::string, int&gt;</a>&gt;(std::cout, <span class="stringliteral">&quot; &quot;</span>)</div>
-<div class="line">  );</div>
-<div class="line">  std::cout &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Those 30 and over: &quot;</span>;</div>
-<div class="line">  pp.second.bindings (</div>
-<div class="line">    <a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/iterator/ostream_iterator.html">std::ostream_iterator</a>&lt;<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/pair.html">std::pair&lt;std::string, int&gt;</a>&gt;(std::cout, <span class="stringliteral">&quot; &quot;</span>)</div>
-<div class="line">  );</div>
-<div class="line">  std::cout &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line">  <span class="comment">// std::cout &lt;&lt; &quot;Those under 30: &quot;;</span></div>
+<div class="line">  <span class="comment">// pp.first.bindings (</span></div>
+<div class="line">  <span class="comment">//   std::ostream_iterator&lt;std::pair&lt;std::string, int&gt;&gt;(std::cout, &quot; &quot;)</span></div>
+<div class="line">  <span class="comment">// );</span></div>
+<div class="line">  <span class="comment">// std::cout &lt;&lt; &#39;\n&#39;;</span></div>
+<div class="line">  <span class="comment">// std::cout &lt;&lt; &quot;Those 30 and over: &quot;;</span></div>
+<div class="line">  <span class="comment">// pp.second.bindings (</span></div>
+<div class="line">  <span class="comment">//   std::ostream_iterator&lt;std::pair&lt;std::string, int&gt;&gt;(std::cout, &quot; &quot;)</span></div>
+<div class="line">  <span class="comment">// );</span></div>
+<div class="line">  <span class="comment">// std::cout &lt;&lt; &#39;\n&#39;;</span></div>
 <div class="line"></div>
 <div class="line">  ages = ages.map ([](<span class="keywordtype">int</span> age) { <span class="keywordflow">return</span> ++age; });</div>
 <div class="line">  EXPECT_EQ(ages.lookup (<a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/string/basic_string.html">std::string</a>{<span class="stringliteral">&quot;henry&quot;</span>}), 67);</div>

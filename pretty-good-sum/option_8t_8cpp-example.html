@@ -115,7 +115,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><span class="comment">//is_none : `true` if a `some_t&lt;&gt;`, `false` otherwise</span></div>
 <div class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
 <div class="line"><span class="keywordtype">bool</span> is_none (option&lt;T&gt; <span class="keyword">const</span>&amp; o) {</div>
-<div class="line">  <span class="keywordflow">return</span> o.<a name="a1"></a><a class="code" href="classpgs_1_1sum__type.html#a45d97b3a779fac1c047680e2baf3ffa5">is</a>&lt;none_t&gt; ();</div>
+<div class="line">  <span class="keywordflow">return</span> o.template is&lt;none_t&gt; ();</div>
 <div class="line">}</div>
 <div class="line"></div>
 <div class="line"><span class="comment">//A trait that can &quot;get at&quot; the type `T` contained by an option</span></div>
@@ -129,7 +129,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><span class="comment">//Factory function for case `none_t`</span></div>
 <div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
 <div class="line">option&lt;T&gt; none () {</div>
-<div class="line">  <span class="keywordflow">return</span> option&lt;T&gt;{<a name="_a2"></a><a class="code" href="structpgs_1_1constructor.html">constructor&lt;none_t&gt;</a>{}};</div>
+<div class="line">  <span class="keywordflow">return</span> option&lt;T&gt;{<a name="_a1"></a><a class="code" href="structpgs_1_1constructor.html">constructor&lt;none_t&gt;</a>{}};</div>
 <div class="line">}</div>
 <div class="line"></div>
 <div class="line"><span class="comment">//Factory function for case `some_t&lt;&gt;`</span></div>
@@ -142,7 +142,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><span class="comment">//is_some : `false` if a `none_t`, `true` otherwise</span></div>
 <div class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
 <div class="line"><span class="keyword">inline</span> <span class="keywordtype">bool</span> is_some (option&lt;T&gt; <span class="keyword">const</span>&amp; o) {</div>
-<div class="line">  <span class="keywordflow">return</span> o.is&lt;some_t&lt;T&gt;&gt;();</div>
+<div class="line">  <span class="keywordflow">return</span> o.template is&lt;some_t&lt;T&gt;&gt;();</div>
 <div class="line">}</div>
 <div class="line"></div>
 <div class="line"><span class="comment">//Attempt to get a `const` reference to the value contained by an</span></div>
@@ -151,7 +151,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">T <span class="keyword">const</span>&amp; <span class="keyword">get</span> (option&lt;T&gt; <span class="keyword">const</span> &amp; u) {</div>
 <div class="line">  <span class="keywordflow">return</span> u.template match&lt;T const&amp;&gt; (</div>
 <div class="line">   [](some_t&lt;T&gt; <span class="keyword">const</span>&amp; o) -&gt; T <span class="keyword">const</span>&amp; { <span class="keywordflow">return</span> o.data; },</div>
-<div class="line">   [](none_t <span class="keyword">const</span>&amp;) -&gt; T <span class="keyword">const</span>&amp; { <span class="keywordflow">throw</span> <a name="_a3"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/error/runtime_error.html">std::runtime_error</a> {<span class="stringliteral">&quot;get&quot;</span>}; }</div>
+<div class="line">   [](none_t <span class="keyword">const</span>&amp;) -&gt; T <span class="keyword">const</span>&amp; { <span class="keywordflow">throw</span> <a name="_a2"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/error/runtime_error.html">std::runtime_error</a> {<span class="stringliteral">&quot;get&quot;</span>}; }</div>
 <div class="line">  );</div>
 <div class="line">}</div>
 <div class="line"></div>
@@ -234,7 +234,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"></div>
 <div class="line"><span class="comment">//safe &quot;arithmetic&quot;</span></div>
 <div class="line"></div>
-<div class="line"><a name="_a4"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/functional/function.html">std::function&lt;option&lt;int&gt;</a>(int)&gt; add (<span class="keywordtype">int</span> x) {</div>
+<div class="line"><a name="_a3"></a><a class="codeRef" doxygen="D:/project/pretty-good-sum.git/doxygen/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/utility/functional/function.html">std::function&lt;option&lt;int&gt;</a>(int)&gt; add (<span class="keywordtype">int</span> x) {</div>
 <div class="line">  <span class="keywordflow">return</span> [=](<span class="keywordtype">int</span> y) -&gt; option&lt;int&gt; {</div>
 <div class="line">    <span class="keywordflow">if</span> ((x &gt; 0) &amp;&amp; (y &gt; INT_MAX - x) ||</div>
 <div class="line">        (x &lt; 0) &amp;&amp; (y &lt; INT_MIN - x)) {</div>
