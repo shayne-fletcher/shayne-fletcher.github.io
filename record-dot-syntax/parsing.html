@@ -162,12 +162,12 @@ type LHsRecUpdProj p = Located (RecUpdProj p)
 It's easy to convert an <code class="code">LHsRecField GhcPs (LHsExpr GhcPs)</code> to an <code class="code">LHsProjUpdate GhcPs (LHsExpr GhcPs)</code> where <code class="code">recUpdFieldToProjUpdate :: LHsRecUpdField GhcPs -> LHsRecUpdProj GhcPs</code> is the function to consult. With this we can process both alternatives of <code class="code">Fbind (HsExpr GhcPs)</code> uniformly. We can now present the new <code class="code">data HsExpr p</code> constructor syntax for record updates when <code class="code">RecordDotSyntax</code> is enabled.
 <pre><code class="code">-- We call this RecordDotUpd in sympathy with RecordUpd.
   -- e.g. a{foo.bar.baz=1, quux} = RecordDotUpd {
-  --   rdupd_ext=noExtField, rdupd_expr=a, rdupd_updates=[...], rdupd_setField=setField@"quux" (setField@"foo"...a... 1) quux
+  --   rdupd_ext=noExtField, rdupd_expr=a, rdupd_upds=[...], rdupd_setField=setField@"quux" (setField@"foo"...a... 1) quux
   -- },
   | RecordDotUpd
     { rdupd_ext :: XRecordDotUpd
     , rdupd_expr :: LHsExpr GhcPs
-    , rdupd_updates :: [LHsRecUpdProj GhcPs]
+    , rdupd_upds :: [LHsRecUpdProj GhcPs]
     , rdupd_setField :: LHsExpr GhcPs -- Desugared equivalent 'setField' term.
     }
 </code></pre>
